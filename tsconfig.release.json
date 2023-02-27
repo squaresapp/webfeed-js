@@ -1,0 +1,13 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"outFile": "+build/yess.js",
+	},
+	"exclude": [
+		"**/+build/**/*.ts",
+		"**/*.cover.ts",
+	],
+	"references": [
+		{ "path": "../Hot" },
+	]
+}

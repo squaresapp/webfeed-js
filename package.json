@@ -1,0 +1,11 @@
+{
+	"name": "yessjs",
+	"author": "Paul Gordon",
+	"description": "YESS generation tool",
+	"version": "1.0.0",
+	"main": "yess.js",
+	"scripts": {
+		"bundle": "tsc -p tsconfig.release.json && terser ./+build/yess.debug.js > ./+build/yess.min.js"
+	},
+	"license": "MIT"
+}
