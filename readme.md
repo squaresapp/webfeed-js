@@ -1,3 +1,6 @@
+<p align="center">
+	<img src="readme-poster.png" alt="HTML Reels Poster Image">
+</p>
 
 # HTML Reels
 
