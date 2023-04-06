@@ -16,7 +16,7 @@ HTML Reels present a real opportunity to fix a broken internet. Your own website
 
 ## Example
 
-Below is a basic example of what an HTML reel looks like. You can see the source code behind this reel [here](tests/basic.html).
+Below is a basic example of what an HTML reel looks like. You can see the source code behind this reel [here](samples/basic.html).
 
 <p align="center">
 	<img src="readme.gif" alt="HTML Reels Example">
