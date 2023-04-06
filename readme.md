@@ -10,7 +10,7 @@ HTML Reels is a purely client-side solution. **No special server software is req
 
 HTML Reels introduce almost nothing in terms of new technology. **This is by-design**. It's literally just a subset of standard HTML, some CSS classes that you can use to make cool stuff happen, and a text file (the feed) that contains a list of URLs. **That's it**. If you can make HTML & CSS pages, you already know 99.9% of what is needed to make HTML Reels.
 
-HTML Reels present a real opportunity to fix a broken internet. Your own website, rather than a profile page on someone else's social platform, was intended as the atomic unit of online existence. This is what HTML Reels intends to restore.
+HTML Reels present a real opportunity to fix a broken internet. The atomic unit of online existence was intended to be your own website. Not some profile page on someone else's social platform. This is what HTML Reels intends to restore.
 
 **But you don't need to care about any social media reformation initiative to benefit from HTML reels.** At it's core, it's a low-effort framework that helps front-end developers build cinematic landing pages, and/or an entire blogs with cinematic content.
 
