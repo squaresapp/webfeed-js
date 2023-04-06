@@ -34,4 +34,4 @@ Both HTML Reels and RSS share the same general idea of being able to operate ent
 
 ## Nostr
 
-Nostr isn't so much of a social media protocol as it is a way to store small bits of data (< 64kb) on remote servers (which they call "relays"), and perform basic query operations on data stored on the relay. It doesn't address the problem of mass distribution of large media (images, videos), and most nostr clients seem to take a self-hosted approach which is what HTML Reels are about anyways. The nostr community is vibrant and growing, and it's possible that future apps could rely on both HTML reels and nostr for different features.
+Nostr isn't so much of a social media protocol as it is a way to store small bits of data (< 64kb) on remote servers (called "relays"), and perform basic query operations on that data. It doesn't address the problem of mass distribution of large media (images, videos), and most nostr clients seem to take a self-hosted approach which is what HTML Reels are about anyways. The nostr community is vibrant and growing, and it's possible that future media distribution apps could rely on both HTML reels and nostr for different features.
