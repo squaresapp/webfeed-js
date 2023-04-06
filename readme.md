@@ -14,6 +14,13 @@ HTML Reels present a real opportunity to fix a broken internet. Your own website
 
 **But you don't need to care about any social media reformation initiative to benefit from HTML reels.** At it's core, it's a low-effort framework that helps front-end developers build cinematic landing pages, and/or an entire blogs with cinematic content.
 
+## Example
+
+Below is a basic example of what an HTML reel looks like. You can see the source code behind this reel [here](tests/basic.html).
+
+<p align="center">
+	<img src="readme.gif" alt="HTML Reels Example">
+</p>
 
 # How HTML Reels Compare with...
 
