@@ -17,7 +17,7 @@ SECTION
 .s2
 {
 	background-color: black;
-	opacity: calc((var(--vs) + 100) / 100);
+	opacity: var(--011);
 }
 .s3
 {
@@ -40,8 +40,8 @@ H1
 
 .s2 H1
 {
-	filter: blur(calc(var(--vs) * -1px));
-	transform: perspective(1000px) translateZ(min(0px, calc(var(--vs) * 10px)));
+	filter: blur(calc(var(--100) * 20px));
+	transform: perspective(10px) translateZ(calc(var(--100) * -10px));
 	transition-property: opacity;
 	transition-duration: 0.5s;
 	opacity: 1;
@@ -94,13 +94,13 @@ H1.typing
 
 .s4 H1
 {
-	opacity: calc((var(--vs) / 30) + 1);
+	opacity: var(--011);
 }
 
 .s4 SPAN
 {
 	display: inline-block;
-	width: calc((var(--vs) * -10px));
+	width: calc(var(--100) * 100vw);
 	min-width: 0.25em;
 }
 
@@ -109,7 +109,7 @@ H1.typing
 	<h1>Start</h1>
 </section>
 <section class="s2 --lock">
-	<h1 class="fade-out@1">Blur Fade Zoom</h1>
+	<h1 class="fade-out@0.01">Blur Fade Zoom</h1>
 </section>
 <section class="s3">
 	<div class="typing-container">

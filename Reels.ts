@@ -2,7 +2,7 @@
 namespace Reels
 {
 	//@ts-ignore
-	if (typeof document === "undefined") return;
+	if (typeof Hot === "undefined" || typeof document === "undefined") return;
 	
 	const hot = new Hot();
 	

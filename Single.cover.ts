@@ -48,10 +48,10 @@ namespace Reels.Cover
 				
 			),
 			hot.section(
-				"a@..-90",
-				"b@-90..-80",
-				"c@10",
-				"d@20..",
+				"a@-1..-0.9",
+				"b@-0.9..-0.8",
+				"c@0.1",
+				"d@0.2..",
 				"e@",
 				"f@..",
 			),
@@ -66,6 +66,48 @@ namespace Reels.Cover
 			),
 			hot.section(
 				
+			),
+		);
+	}
+	
+	/** */
+	export function coverReelProgressFunctions()
+	{
+		const hot = new Hot();
+		Reels.appendStandardCss();
+		
+		document.body.append(
+			hot.style(
+				"DIV", {
+					position: "relative",
+					border: "10px solid blue",
+					width: "100px",
+					height: "100px",
+					textAlign: "center",
+					color: "white",
+					fontWeight: 900,
+				}
+			),
+			hot.section(
+				{
+					backgroundColor: "crimson",
+				}
+			),
+			hot.section(
+				{
+					backgroundColor: "black",
+				},
+				hot.div(new Text("100"), { left: "calc(var(--100) * 100px)" }),
+				hot.div(new Text("010"), { left: "calc(var(--010) * 100px)" }),
+				hot.div(new Text("001"), { left: "calc(var(--001) * 100px)" }),
+				hot.div(new Text("110"), { left: "calc(var(--110) * 100px)" }),
+				hot.div(new Text("011"), { left: "calc(var(--011) * 100px)" }),
+				hot.div(new Text("101"), { left: "calc(var(--101) * 100px)" }),
+			),
+			hot.section(
+				{
+					backgroundColor: "orange"
+				}
 			),
 		);
 	}

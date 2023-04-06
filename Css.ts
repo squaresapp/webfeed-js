@@ -178,13 +178,13 @@ namespace Reels
 				const range = parts[1].split("..");
 				
 				if (range[0] === "")
-					range[0] = "-100";
+					range[0] = "-1";
 				
 				if (range.length === 1)
-					range.push("100");
+					range.push("1");
 				
 				if (range[1] === "")
-					range[1] = "100";
+					range[1] = "1";
 				
 				let low = Number(range[0]);
 				let high = Number(range[1]);
@@ -237,28 +237,28 @@ namespace Reels
 			if (!(e instanceof HTMLElement))
 				continue;
 			
-			let vs = rec.intersectionRatio * 100;
+			let vs = rec.intersectionRatio;
 			
 			if (rec.boundingClientRect.top >= 0)
-				vs -= 100;
+				vs -= 1;
 			else
-				vs = 100 - vs;
+				vs = 1 - vs;
 			
-			if (vs >= -1 && vs <= 1)
+			if (vs >= -0.01 && vs <= 0.01)
 				vs = 0;
 			
-			if (vs > 99 && vs < 100)
-				vs = 100;
+			if (vs > 0.99 && vs < 1)
+				vs = 1;
 			
-			if (vs < -99 && vs > -100)
-				vs = -100;
+			if (vs < -0.99 && vs > -1)
+				vs = -1;
 			
 			if (e.classList.contains(StandardClasses.lock))
 			{
 				const strip = Array.from(e.children).find(e => e.classList.contains(StandardClasses.strip));
 				if (strip instanceof HTMLElement)
 				{
-					if (Math.abs(vs) === 100)
+					if (Math.abs(vs) === 1)
 						strip.style.visibility = "hidden";
 					
 					else if (strip.style.visibility === "hidden")
@@ -266,6 +266,19 @@ namespace Reels
 				}
 			}
 			
+			const v100 = Math.abs(Math.min(vs, 0));
+			const v010 = 1 - Math.abs(vs);
+			const v001 = Math.max(0, vs);
+			const v110 = 1 - Math.max(0, vs);
+			const v011 = Math.min(1, vs + 1);
+			const v101 = Math.abs(vs);
+			
+			e.style.setProperty("--100", v100.toString());
+			e.style.setProperty("--010", v010.toString());
+			e.style.setProperty("--001", v001.toString());
+			e.style.setProperty("--110", v110.toString());
+			e.style.setProperty("--011", v011.toString());
+			e.style.setProperty("--101", v101.toString());
 			e.style.setProperty("--vs", vs.toString());
 			
 			const tcs = triggerClassMap.get(e);
