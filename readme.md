@@ -8,7 +8,7 @@ HTML Reels is a series of base primitives for building scrollable cinematic hype
 
 HTML Reels is a purely client-side solution. **No special server software is required**, such as nodes, relays, blockchains, miners, or any centralized service. The hypermedia pages, the feeds, and the distribution process requires nothing more than generic static web hosting. You can distribute from Netlify, Vercel, GitHub pages, Surge.sh, Cloudflare Pages, a plain S3 bucket, old-school web hosting, or even a laptop in your garage with a static IP.
 
-HTML Reels introduce almost nothing in terms of new technology. **This is by-design**. It's literally just a subset of standard HTML, some CSS classes that you can use to make cool stuff happen, and a text file (the feed) that contains a list of URLs. **That's it**. If you can make HTML & CSS pages, you already know 99.9% of what is needed to make HTML Reels.
+HTML Reels introduce almost nothing in terms of new technology. **This is by-design**. It's literally just a subset of standard HTML, some CSS primitives that you can use to make cool stuff happen, and a text file (the feed) that contains a list of URLs. **That's it**. If you can make HTML & CSS pages, you already know 99.9% of what is needed to make HTML Reels.
 
 HTML Reels present a real opportunity to fix a broken internet. The atomic unit of online existence was intended to be your own website. Not some profile page on someone else's social platform. This is what HTML Reels intends to restore.
 
