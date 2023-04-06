@@ -1,5 +1,5 @@
 
-namespace Yess
+namespace Reels
 {
 	/**
 	 * A library which operates over the browser-supplied history.pushState()

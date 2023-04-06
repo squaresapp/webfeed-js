@@ -1,8 +1,7 @@
 
-namespace Yess
+namespace Reels
 {
 	/**
-	 * @internal
 	 * A namespace of functions that perform URL manipulation.
 	 */
 	export namespace Url

@@ -1,18 +1,21 @@
 
-namespace Yess
+namespace Reels
 {
+	//@ts-ignore
+	if (typeof document === "undefined") return;
+	
 	const hot = new Hot();
 	
 	/**
-	 * 
+	 * (Deprecated, only called from YessReaderDemo)
 	 */
 	export function getFrameCss(container: HTMLElement = document.body)
 	{
 		let containerSelector = container.nodeName;
 		if (containerSelector !== "BODY")
 		{
-			container.classList.add(Const.yessContainerClass);
-			containerSelector = "." + Const.yessContainerClass;
+			container.classList.add(Const.reelContainerClass);
+			containerSelector = "." + Const.reelContainerClass;
 		}
 		
 		return hot.style(
@@ -41,12 +44,12 @@ namespace Yess
 	}
 	
 	/**
-	 * 
+	 * Deprecated
 	 */
 	export function getSceneCss()
 	{
-		const sc = "." + Const.yessSceneClass;
-		const sn = "." + Const.yessSectionClass;
+		const sc = "." + Const.reelSceneClass;
+		const sn = "." + Const.reelSectionClass;
 		
 		return hot.style(
 			sc + "," + sn, {
@@ -77,7 +80,7 @@ namespace Yess
 	 */
 	export async function embed(url: string, target: ParentNode)
 	{
-		const info = await readFromUrl(url);
+		const info = await readReel(url);
 		if (!info)
 			return;
 		
@@ -113,7 +116,7 @@ namespace Yess
 						continue;
 					}
 					
-					Yess.readFromUrl(srcResolved).then(info =>
+					Reels.readReel(srcResolved).then(info =>
 					{
 						setLoading(child, false);
 						
@@ -148,7 +151,7 @@ namespace Yess
 	 * Reads YESS content at the specified URL, and returns an
 	 * object parsed with the relevant data.
 	 */
-	export async function readFromUrl(url: string)
+	export async function readReel(url: string)
 	{
 		const doc = await readDocumentFromUrl(url);
 		if (!doc)
@@ -156,7 +159,7 @@ namespace Yess
 		
 		const title = doc.title;
 		const meta = getMeta(doc, url);
-		const stream = (meta?.streamUrl || "").trim();
+		const feed = (meta?.feedUrl || "").trim();
 		const ping = (meta?.pingUrl || "").trim();
 		const sections = query("BODY > SECTION", doc);
 		const head = Array.from(query("LINK, STYLE", doc.head));
@@ -171,7 +174,7 @@ namespace Yess
 			// are defined within the loaded HTML, the script tags need
 			// to be manually cloned, because scripts do not execute that
 			// are (or were at any point in history) a child of of the parsed
-			// document,
+			// document.
 			if (!enableSecurity)
 			{
 				for (const script of Array.from(section.getElementsByTagName("script")))
@@ -195,63 +198,10 @@ namespace Yess
 		
 		return {
 			title,
-			stream: stream ? Url.resolve(stream, Url.folderOf(url)) : "",
+			feed: feed ? Url.resolve(feed, Url.folderOf(url)) : "",
 			ping: ping ? Url.resolve(ping, Url.folderOf(ping)) : "",
 			sections,
 		};
-	}
-	
-	/**
-	 * Returns the provided array of HTML <section> elements converted into "scenes".
-	 * "Scenes" in this case refers to the contents being wrapped in an HTML <div>
-	 * element, and being moved into this element's shadow root.
-	 */
-	function convertToScenes(sections: HTMLElement[], baseUrl: string)
-	{
-		baseUrl = Url.folderOf(baseUrl);
-		const scenes: HTMLElement[] = [];
-		
-		// Resolve the sections
-		for (const section of sections)
-		{
-			const resolvables = query("LINK[href], A[href], IMG[src], FORM[action], SCRIPT[src]", section);
-			resolvables.push(section);
-			const names = ["href", "src", "action", "data-src"];
-			
-			for (const element of resolvables)
-			{
-				const attrs = names
-					.map(a => element.getAttributeNode(a))
-					.filter((a): a is Attr => !!a);
-				
-				for (const attribute of attrs)
-					attribute.value = Url.resolve(attribute.value, baseUrl);
-			}
-			
-			// Only convert the <section> tags to scenes with shadow roots
-			// when the scene's contents have been loaded
-			if (!getSectionSource(section))
-			{
-				scenes.push(
-					hot.div(
-						Const.yessSceneClass,
-						hot.shadow(
-							hot.style(
-								hot.text(`SECTION { position: absolute; top: 0; right: 0; bottom: 0; left: 0; }`)
-							),
-							hot.get(section)(
-								Array.from(section.childNodes)
-							)
-						)
-					)
-				);
-				
-				//! Go through any style sheets and fix the url()'s
-			}
-			else scenes.push(section);
-		}
-		
-		return scenes;
 	}
 	
 	/**
@@ -283,13 +233,13 @@ namespace Yess
 		}
 		
 		return hot.div(
-			Const.yessSceneClass,
+			Const.reelSceneClass,
 			hot.shadow(
 				hot.style(
 					hot.text(`SECTION { position: absolute; top: 0; right: 0; bottom: 0; left: 0; overflow: hidden; }`)
 				),
 				hot.get(section)(
-					Const.yessSectionClass,
+					Const.reelSectionClass,
 					Array.from(section.childNodes)
 				)
 			)
@@ -297,101 +247,11 @@ namespace Yess
 	}
 	
 	/**
-	 * Returns an array containing the HTML <section> elements
-	 * that exist as direct children of the the specified ParentNode,
-	 * whose contents should be loaded from an external source.
-	 */
-	function getSectionElementsExternalized(container: ParentNode)
-	{
-		const sections: HTMLElement[] = [];
-		
-		for (const child of eachNodeOf(container.childNodes))
-			if (Hot.is.element(child) && child.hasAttribute(Const.yessSrcKey))
-				sections.push(child);
-		
-		return sections;
-	}
-	
-	/**
 	 * 
 	 */
 	function getSectionSource(section: HTMLElement)
 	{
-		return section.getAttribute(Const.yessSrcKey) || "";
-	}
-	
-	/**
-	 * 
-	 */
-	export async function readDocumentFromUrl(url: string)
-	{
-		const result = await readHttpUri(url);
-		if (!result)
-			return null;
-		
-		const docUri = Url.folderOf(url);
-		const sanitizer = new ForeignDocumentSanitizer(result.text, docUri);
-		sanitizer.enableSecurity = enableSecurity;
-		return sanitizer.read();
-	}
-	
-	/**
-	 * Reads the text content from the specified URL.
-	 */
-	export async function readHttpUri(relativeUri: string)
-	{
-		relativeUri = Url.resolve(relativeUri, getDocumentBaseUrl());
-		
-		try
-		{
-			const fetchResult = await window.fetch(relativeUri, {
-				method: "GET",
-				headers: {
-					"pragma": "no-cache",
-					"cache-control": "no-cache"
-				}
-			});
-			
-			if (!fetchResult.ok)
-			{
-				console.error("Fetch failed: " + relativeUri);
-				return null;
-			}
-			
-			const text = await fetchResult.text();
-			return {
-				headers: fetchResult.headers,
-				text,
-			};
-		}
-		catch (e)
-		{
-			relativeUri;
-			debugger;
-			return null;
-		}
-	}
-	
-	/** */
-	function query(selector: string, parentNode: ParentNode = document)
-	{
-		return Array.from(parentNode.querySelectorAll(selector)) as HTMLElement[];
-	}
-	
-	/** */
-	function * eachNodeOf(nodes: Nodes)
-	{
-		if (Array.isArray(nodes))
-		{
-			for (const node of nodes)
-				yield node;
-		}
-		else for (let i = -1; ++i < nodes.length;)
-		{
-			const n = nodes.item(i);
-			if (n)
-				yield n;
-		}
+		return section.getAttribute(Const.reelSrcKey) || "";
 	}
 	
 	/**
@@ -411,7 +271,7 @@ namespace Yess
 		const metaTag = (() =>
 		{
 			const getMetaTag = (container: ParentNode) =>
-				container.querySelector(`META[name=${Const.yessMetaKey}]`);
+				container.querySelector(`META[name=${Const.reelMetaKey}]`);
 			
 			const tagAtRoot = getMetaTag(container);
 			if (tagAtRoot)
@@ -436,7 +296,7 @@ namespace Yess
 		if (!metaTag)
 			return null;
 		
-		let streamUrl = "";
+		let feedUrl = "";
 		let pingUrl = "";
 		
 		const contentValue = metaTag.getAttribute("content");
@@ -448,15 +308,15 @@ namespace Yess
 				if (tuple.length !== 2)
 					continue;
 				
-				if (tuple[0] === Const.yessMetaStreamKey)
-					streamUrl = tuple[1];
+				if (tuple[0] === Const.reelMetaFeedKey)
+					feedUrl = tuple[1];
 				
-				else if (tuple[0] === Const.yessMetaPingKey)
+				else if (tuple[0] === Const.reelMetaPingKey)
 					pingUrl = tuple[1];
 			}
 		}
 		
-		return { streamUrl, pingUrl };
+		return { feedUrl, pingUrl };
 	}
 	
 	/**
@@ -483,60 +343,157 @@ namespace Yess
 	let storedDocumentUrl = "";
 	
 	/**
-	 * Creates a reader function that returns the next poster from the
-	 * stream located at the specified URL. The reader function skips
-	 * over URLs defined within the stream that do not reference
-	 * valid YESS content.
 	 * 
-	 * @returns A function that returns HTMLElement containing the
-	 * poster element if one exists, or null in the case when the stream
-	 * has terminated.
 	 */
-	export async function * readStream(streamUrl: string)
+	export async function readDocumentFromUrl(url: string)
 	{
-		const fetchResult = await readHttpUri(streamUrl);
-		if (!fetchResult)
-			return;
+		const result = await readHttpUri(url);
+		if (!result)
+			return null;
 		
-		const storyReferenceQueue = fetchResult.text
-			.split("\n")
-			.map(s => s.trim())
-			.filter(s => !!s)
-			.map(s => Url.resolve(s, Url.folderOf(streamUrl)));
+		const docUri = Url.folderOf(url);
+		const sanitizer = new ForeignDocumentSanitizer(result.text, docUri);
+		sanitizer.enableSecurity = enableSecurity;
+		return sanitizer.read();
+	}
+	
+	/**
+	 * Reads the text content from the specified URL.
+	 */
+	export async function readHttpUri(relativeUri: string, startingByte = 0)
+	{
+		relativeUri = Url.resolve(relativeUri, getDocumentBaseUrl());
 		
-		for (;;)
+		try
 		{
-			const nextUrl = storyReferenceQueue.shift();
-			if (!nextUrl)
-				break;
+			const headers: HeadersInit = {
+				"pragma": "no-cache",
+				"cache-control": "no-cache",
+			};
 			
-			const yessData = await readFromUrl(nextUrl);
+			if (startingByte > 0)
+				headers.range = "bytes=" + startingByte + "-";
+			
+			const fetchResult = await window.fetch(relativeUri, {
+				method: "GET",
+				headers,
+			});
+			
+			if (!fetchResult.ok)
+			{
+				console.error("Fetch failed: " + relativeUri);
+				return null;
+			}
+			
+			const text = await fetchResult.text();
+			return {
+				headers: fetchResult.headers,
+				text,
+			};
+		}
+		catch (e)
+		{
+			relativeUri;
+			debugger;
+			return null;
+		}
+	}
+	
+	/**
+	 * Reads poster scenes from a feed text file located at the specified URL.
+	 * 
+	 * @returns An async generator function that iterates through
+	 * every story specified in the specified feed URL, and returns
+	 * the poster scene associated with each story.
+	 */
+	export async function * readPosters(feedUrl: string)
+	{
+		const readResult = await readFeed(feedUrl);
+		
+		for (const url of readResult.urls)
+		{
+			const yessData = await readReel(url);
 			if (!yessData || yessData.sections.length === 0)
 				continue;
 			
 			const posterSection = yessData.sections[0];
-			const posterScene = Yess.toScene(posterSection, nextUrl);
-			
-			yield {
-				scene: posterScene,
-				url: nextUrl
-			};
+			const scene = Reels.toScene(posterSection, url);
+			yield { scene, url };
 		}
+	}
+	
+	/**
+	 * Reads a single poster from the specified URL.
+	 */
+	export async function readPoster(storyUrl: string)
+	{
+		const yessData = await readReel(storyUrl);
+		if (!yessData || yessData.sections.length === 0)
+			return null;
+		
+		const posterSection = yessData.sections[0];
+		const poster = Reels.toScene(posterSection, storyUrl);
+		
+		return {
+			title: yessData.title,
+			poster,
+		};
+	}
+	
+	/**
+	 * Reads the URLs defined in the feed file located at the specified
+	 * URL. The function accepts a startingByte argument in order to 
+	 */
+	export async function readFeed(feedUrl: string, startingByte = 0)
+	{
+		const urls: string[] = [];
+		const fetchResult = await readHttpUri(feedUrl, startingByte);
+		let bytesRead = -1;
+		
+		if (fetchResult)
+		{
+			const type = (fetchResult.headers.get("Content-Type") || "").split(";")[0];
+			if (type !== "text/plain")
+			{
+				console.error(
+					"Feed at URL: " + feedUrl + "was returned with an incorrect " +
+					"mime type. Expected mime type is \"text/plain\", but the mime type \"" + 
+					type + "\" was returned.");
+			}
+			else
+			{
+				urls.push(...fetchResult.text
+					.split("\n")
+					.map(s => s.trim())
+					.filter(s => !!s)
+					.map(s => Url.resolve(s, Url.folderOf(feedUrl))));
+				
+				bytesRead = fetchResult.text.length || 0;
+			}
+		}
+		
+		return { urls, bytesRead };
+	}
+	
+	/** */
+	function query(selector: string, parentNode: ParentNode = document)
+	{
+		return Array.from(parentNode.querySelectorAll(selector)) as HTMLElement[];
 	}
 	
 	/**
 	 * Main entry point for when the yess.js script is 
 	 * embedded within a web page.
 	 */
-	if (document.readyState !== "complete")
+	if (typeof document !== "undefined" && document.readyState !== "complete")
 	{
 		window.addEventListener("DOMContentLoaded", () =>
 		{
-			if (Yess.getMeta(document))
+			if (Reels.getMeta(document))
 			{
 				enableSecurity = false;
-				document.head.prepend(Yess.getFrameCss(), Yess.getSceneCss());
-				Yess.launch();
+				document.head.prepend(Reels.getFrameCss(), Reels.getSceneCss());
+				Reels.launch();
 			}
 		});
 	}
@@ -548,15 +505,14 @@ namespace Yess
 	/** */
 	const enum Const
 	{
-		yessContainerClass = "yess-container",
-		yessSceneClass = "yess-scene",
-		yessSectionClass = "yess-section",
-		yessSrcKey = "data-src",
-		yessMetaKey = "yess",
-		yessMetaStreamKey = "stream",
-		yessMetaPingKey = "ping",
-		pervasiveAttribute = "data-pervasive",
+		reelContainerClass = "reel-container",
+		reelSceneClass = "reel-scene",
+		reelSectionClass = "reel-section",
+		reelSrcKey = "data-src",
+		reelMetaKey = "reel",
+		reelMetaFeedKey = "feed",
+		reelMetaPingKey = "ping",
 	}
 	
-	typeof module === "object" && Object.assign(module.exports, { Yess });
+	typeof module === "object" && Object.assign(module.exports, { Reels });
 }

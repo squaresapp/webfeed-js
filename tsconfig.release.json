@@ -1,7 +1,7 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"outFile": "+build/yess.js",
+		"outFile": "+build/reels.js",
 	},
 	"exclude": [
 		"**/+build/**/*.ts",

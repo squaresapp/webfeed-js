@@ -1,5 +1,5 @@
 
-namespace Yess.Cover
+namespace Reels.Cover
 {
 	/** */
 	export async function coverHistory()

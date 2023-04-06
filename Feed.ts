@@ -1,60 +1,26 @@
 
-namespace Yess
+namespace Reels
 {
-	/**
-	 * 
-	 */
-	export class Multiplexer
-	{
-		/** */
-		constructor()
-		{
-			
-		}
-		
-		/** */
-		addStreamUrl(streamUrl: string)
-		{
-			
-		}
-	}
-	
 	/** */
-	export class Stream
-	{
-		/** */
-		static async from(url: string)
-		{
-			return new Stream(url);
-		}
-		
-		/** */
-		private constructor(readonly url: string)
-		{
-			
-		}
-	}
-	
-	/** */
-	export class StreamSource
+	export class Feed
 	{
 		/** */
 		constructor(url: string)
 		{
-			this.url = Url.resolve(url, Yess.getDocumentBaseUrl());
+			this.url = Url.resolve(url, Reels.getDocumentBaseUrl());
 		}
 		
 		/**
-		 * A fully-qualified URL to the text file that contains the stream information.
+		 * A fully-qualified URL to the text file that contains the feed information.
 		 */
 		url = "";
 		
 		/**
-		 * Downloads any new content from the stream.
+		 * Downloads any new content from the feed.
 		 */
 		async ping()
 		{
-			const fetchResult = await Yess.readHttpUri(this.url);
+			const fetchResult = await Reels.readHttpUri(this.url);
 			if (!fetchResult)
 				return;
 			
@@ -82,12 +48,12 @@ namespace Yess
 			
 			return urls.map(url => new Promise<ISceneInfo | null>(async r =>
 			{
-				const yessData = await readFromUrl(url);
+				const yessData = await Reels.readReel(url);
 				if (!yessData || yessData.sections.length === 0)
 					return r(null);
 				
 				const posterSection = yessData.sections[0];
-				const posterScene = Yess.toScene(posterSection, url);
+				const posterScene = Reels.toScene(posterSection, url);
 				if (!posterScene)
 					return r(null);
 				

@@ -1,44 +1,47 @@
 
-namespace Yess.Cover
+namespace Reels.Cover
 {
-	const hot = new Hot();
 	const baseUrl = "http://localhost:8080/";
 	
 	/** */
-	export async function coverYessEmbed()
+	export async function coverReelsEmbed()
 	{
 		const view = createVirtualDevice();
-		document.head.append(Yess.getFrameCss(view), Yess.getSceneCss());
-		await Yess.embed(baseUrl, view);
+		document.head.append(Reels.getFrameCss(view), Reels.getSceneCss());
+		await Reels.embed(baseUrl, view);
 		console.log("Done");
 	}
 	
 	/** */
-	export async function coverYessLaunch()
+	export async function coverReelsLaunch()
 	{
+		const hot = new Hot();
+		
 		// Setup
-		const doc = await Yess.readDocumentFromUrl(baseUrl);
+		const doc = await Reels.readDocumentFromUrl(baseUrl);
 		if (!doc)
 			throw "?";
 		
 		document.head.append(
 			hot.base({ href: baseUrl }),
-			Yess.getFrameCss(),
-			Yess.getSceneCss(),
+			Reels.getFrameCss(),
+			Reels.getSceneCss(),
 			...Array.from(doc.head.childNodes));
 		
 		document.body.append(...Array.from(doc.body.childNodes));
-		await Yess.launch();
+		await Reels.launch();
 	}
 	
 	/** */
-	export async function coverYessStream()
+	export async function coverReelsFeed()
 	{
-		const yessData = await Yess.readFromUrl(baseUrl);
-		if (!yessData)
+		const hot = new Hot();
+		
+		const yessStory = await Reels.readReel(baseUrl);
+		if (!yessStory)
 			throw "?";
 		
-		const streamContainerElement = hot.div({
+		const feedContainerElement = hot.div({
 			position: "relative",
 			height: "100%",
 			zIndex: 1,
@@ -47,14 +50,14 @@ namespace Yess.Cover
 		});
 		
 		const root = createVirtualDevice();
-		root.append(streamContainerElement);
+		root.append(feedContainerElement);
 		
-		for await (const entry of Yess.readStream(yessData.stream))
+		for await (const entry of Reels.readPosters(yessStory.feed))
 		{
 			if (!entry.scene)
 				continue;
 			
-			streamContainerElement.append(hot.div(
+			feedContainerElement.append(hot.div(
 				"scene-container",
 				{
 					width: "33.3333%",
@@ -80,16 +83,10 @@ namespace Yess.Cover
 	}
 	
 	/** */
-	export async function coverYessJsMultiplexer()
-	{
-		const mux = new Multiplexer();
-		mux.addStreamUrl(baseUrl + "source-1/");
-		mux.addStreamUrl(baseUrl + "source-2/");
-	}
-	
-	/** */
 	function createVirtualDevice()
 	{
+		const hot = new Hot();
+		
 		let root: HTMLElement = null!;
 		
 		document.body.append(
