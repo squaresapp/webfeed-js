@@ -21,7 +21,7 @@ namespace Reels.Cover
 				position: "absolute",
 				top: "40%",
 				left: "40%",
-				opacity: "calc((var(--vs) / 50) + 1)",
+				opacity: "calc((var(--inc) / 50) + 1)",
 				width: "20%",
 				height: "20%",
 				background: "black",
@@ -29,17 +29,17 @@ namespace Reels.Cover
 			".move", {
 				position: "absolute",
 				top: "40%",
-				left: "calc(50% + (10px * var(--vs)))",
+				left: "calc(50% + (10px * var(--inc)))",
 				width: "20%",
 				height: "20%",
 				background: "black",
 			},
-			`SECTION.${StandardClasses.lock}`, {
+			`SECTION.${StandardClasses.fixed}`, {
 				backgroundColor: "black",
 			},
-			`SECTION.${StandardClasses.lock} .${StandardClasses.lock}`, {
+			`SECTION.${StandardClasses.fixed} .${StandardClasses.fixed}`, {
 				backgroundColor: "black",
-				opacity: "calc((var(--vs) + 100) / 100)"
+				opacity: "calc((var(--inc) + 1) / 100)"
 			}
 		).attach();
 		
@@ -56,7 +56,7 @@ namespace Reels.Cover
 				"f@..",
 			),
 			hot.section(
-				StandardClasses.lock
+				StandardClasses.fixed
 			),
 			hot.section(
 				hot.div("opacity")
@@ -110,5 +110,116 @@ namespace Reels.Cover
 				}
 			),
 		);
+	}
+	
+	/** */
+	export function coverReelFadeInOut()
+	{
+		const hot = new Hot();
+		Reels.appendStandardCss();
+		setupCover();
+		
+		document.body.append(
+			hot.section(
+				
+			),
+			hot.section(
+				hot.h1(
+					{
+						opacity: "calc((var(--010) * 3) - 2)"
+					},
+					new Text("Fade In Fade Out")
+				)
+			),
+			hot.section(
+				
+			),
+		);
+	}
+	
+	/** */
+	export function coverReelMoveAcross()
+	{
+		const hot = new Hot();
+		Reels.appendStandardCss();
+		setupCover();
+		
+		document.body.append(
+			hot.section(
+				
+			),
+			hot.section(
+				hot.h1(
+					{
+						transform: "translateX(calc(var(--inc) * 150vw))",
+					},
+					new Text("Movin'")
+				)
+			),
+			hot.section(
+				
+			),
+		);
+	}
+	
+	/** */
+	export function coverReelFixed()
+	{
+		const hot = new Hot();
+		Reels.appendStandardCss();
+		setupCover();
+		
+		document.body.append(
+			hot.section(
+				
+			),
+			hot.section(
+				StandardClasses.fixed,
+				hot.h1(
+					{
+						filter: "blur(calc(var(--101) * 100px))",
+						opacity: "calc((var(--010) * 3) - 2)",
+					},
+					new Text("Solid.")
+				)
+			),
+			hot.section(
+				
+			),
+		);
+	}
+	
+	/** */
+	function setupCover()
+	{
+		const hot = new Hot();
+		
+		hot.style(
+			"HTML", {
+				backgroundColor: "black",
+				color: "white",
+			},
+			"*", {
+				fontFamily: "Inter, -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif",
+			},
+			"H1", {
+				position: "absolute",
+				margin: "auto",
+				top: 0,
+				left: 0,
+				right: 0,
+				bottom: 0,
+				width: "fit-content",
+				height: "fit-content",
+				fontSize: "10vw",
+				fontWeight: 900,
+			},
+			"SECTION", {
+				overflow: "hidden",
+			},
+			"SECTION:nth-child(odd)", {
+				backgroundColor: "#444",
+			},
+		).attach();
 	}
 }

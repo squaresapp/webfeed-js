@@ -22,6 +22,8 @@ Below is a basic example of what an HTML reel looks like. You can see the source
 	<img src="readme.gif" alt="HTML Reels Example">
 </p>
 
+Effects like these only require a few lines of code. Check out the [effects documentation](docs/effects.md) for more information.
+
 # How HTML Reels Compare with...
 
 ## IndieWeb
