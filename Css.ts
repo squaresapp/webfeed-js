@@ -18,7 +18,7 @@ namespace Reels
 		 * Applied to a <section> to indicate that it says fixed in place
 		 * during it's visiblity lifecycle, rather than scrolling with the page.
 		 */
-		lock = "--lock",
+		fixed = "--fixed",
 		
 		/**
 		 * Applied to the element 
@@ -76,14 +76,14 @@ namespace Reels
 			width: 0 !important;
 			height: 100% !important;
 		}
-		.${StandardClasses.lock}
+		.${StandardClasses.fixed}
 		{
 			width: 100vw;
 			height: 100vh;
 			height: 100dvh;
 			position: relative;
 		}
-		.${StandardClasses.strip}, .${StandardClasses.lock}
+		.${StandardClasses.strip}, .${StandardClasses.fixed}
 		{
 			background-color: inherit;
 		}
@@ -130,8 +130,8 @@ namespace Reels
 			if (node instanceof HTMLElement && node.nodeName === "SECTION")
 			{
 				io.observe(node);
-				if (node.classList.contains(StandardClasses.lock))
-					toLock(node);
+				if (node.classList.contains(StandardClasses.fixed))
+					toFixed(node);
 			}
 		}
 		
@@ -139,16 +139,16 @@ namespace Reels
 	}
 	
 	/** */
-	function toLock(section: HTMLElement)
+	function toFixed(section: HTMLElement)
 	{
 		const strip = document.createElement("div");
 		strip.classList.add(StandardClasses.strip);
 		
-		const lock = document.createElement("div");
-		lock.classList.add(StandardClasses.lock);
+		const fixed = document.createElement("div");
+		fixed.classList.add(StandardClasses.fixed);
 		
-		lock.append(...Array.from(section.childNodes));
-		strip.append(lock);
+		fixed.append(...Array.from(section.childNodes));
+		strip.append(fixed);
 		section.append(strip);
 	}
 	
@@ -237,28 +237,28 @@ namespace Reels
 			if (!(e instanceof HTMLElement))
 				continue;
 			
-			let vs = rec.intersectionRatio;
+			let inc = rec.intersectionRatio;
 			
 			if (rec.boundingClientRect.top >= 0)
-				vs -= 1;
+				inc -= 1;
 			else
-				vs = 1 - vs;
+				inc = 1 - inc;
 			
-			if (vs >= -0.01 && vs <= 0.01)
-				vs = 0;
+			if (inc >= -0.01 && inc <= 0.01)
+				inc = 0;
 			
-			if (vs > 0.99 && vs < 1)
-				vs = 1;
+			if (inc > 0.99 && inc < 1)
+				inc = 1;
 			
-			if (vs < -0.99 && vs > -1)
-				vs = -1;
+			if (inc < -0.99 && inc > -1)
+				inc = -1;
 			
-			if (e.classList.contains(StandardClasses.lock))
+			if (e.classList.contains(StandardClasses.fixed))
 			{
 				const strip = Array.from(e.children).find(e => e.classList.contains(StandardClasses.strip));
 				if (strip instanceof HTMLElement)
 				{
-					if (Math.abs(vs) === 1)
+					if (Math.abs(inc) === 1)
 						strip.style.visibility = "hidden";
 					
 					else if (strip.style.visibility === "hidden")
@@ -266,12 +266,12 @@ namespace Reels
 				}
 			}
 			
-			const v100 = Math.abs(Math.min(vs, 0));
-			const v010 = 1 - Math.abs(vs);
-			const v001 = Math.max(0, vs);
-			const v110 = 1 - Math.max(0, vs);
-			const v011 = Math.min(1, vs + 1);
-			const v101 = Math.abs(vs);
+			const v100 = Math.abs(Math.min(inc, 0));
+			const v010 = 1 - Math.abs(inc);
+			const v001 = Math.max(0, inc);
+			const v110 = 1 - Math.max(0, inc);
+			const v011 = Math.min(1, inc + 1);
+			const v101 = Math.abs(inc);
 			
 			e.style.setProperty("--100", v100.toString());
 			e.style.setProperty("--010", v010.toString());
@@ -279,12 +279,13 @@ namespace Reels
 			e.style.setProperty("--110", v110.toString());
 			e.style.setProperty("--011", v011.toString());
 			e.style.setProperty("--101", v101.toString());
-			e.style.setProperty("--vs", vs.toString());
+			e.style.setProperty("--inc", inc.toString());
+			e.style.setProperty("--dec", (inc * -1).toString());
 			
 			const tcs = triggerClassMap.get(e);
 			if (tcs)
 				for (const tc of tcs)
-					tc.target.classList.toggle(tc.class, vs >= tc.low && vs <= tc.high);
+					tc.target.classList.toggle(tc.class, inc >= tc.low && inc <= tc.high);
 		}
 	},
 	{ threshold });
