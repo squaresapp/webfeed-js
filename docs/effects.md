@@ -29,7 +29,9 @@ For the 6 variables that have 1's and 0's in their name, these numbers correspon
 	<img src="diagram.svg">
 </p>
 
-For example, the variable `var(--010)` is `0` when the section is in the *below* position, `1` when in the *focused* position, and back to `0` again when in the `above` position. (If this seems backwards, remember that pages scroll upwards, so elements start in the below the viewport and end above it.)
+The first number specifies the variable value when the section is in the *below* position, the second number specifies the value when the section is in the *focused* position, and the third number specifies the value when the section is in the *above* position.
+
+For example, the variable `var(--010)` has the numbers 0, 1, 0. This means that the variable value will update linearly between 0 1 and 0 as the section moves from the *below* position, to the *focused* position, and finally to the *above* position. (If this seems backwards, remember that pages scroll upwards, so elements start in the below the viewport and end above it.)
 
 Use `var(--inc)` and `var(--dec)` for steady incrementation and decrementation. The `var(--inc)` variable has a value of `-1` when the section is in the *below* position, `0`, when in the *focused* position, and `1` when in the *above* position. The `var(--dec)` variable is similar but reversed.
 
