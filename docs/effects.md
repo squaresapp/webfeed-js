@@ -1,10 +1,9 @@
 
-Instead of a single top-level `<body>` tag, you have multiple top-level `<section>` tags. A section in an HTML reel is a single screen.
+# Differences From HTML
 
-Sections are always at least 1 screen in length. Adding more content to a section doesn't expand the size of the section, unless the section has the --long class applied. Applying the --long class to a section makes the section at least 2 screens in height.
+A typical HTML page has a single top-level `<body>` tag. An HTML reel has multiple top-level `<section>` tags. Each of these sections are full screens that can be swiped through.
 
-Sections can have the `--lock` class applied.
-
+Sections are always at least 1 screen in length. If you want a section that is longer than a single screen, for example, to contain a long-form text article, the `--long` CSS class can be applied to the section like `<section class="--long">`. 
 
 ## CSS Scroll Variables
 
