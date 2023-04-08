@@ -2,7 +2,7 @@
 	"name": "htmlreels",
 	"author": "Paul Gordon",
 	"description": "Utility library for working with HTML Reels",
-	"version": "1.0.3",
+	"version": "1.0.5",
 	"license": "MIT",
 	"repository": {
 		"url": "https://github.com/paul-go/HTMLReels"
@@ -20,6 +20,6 @@
 		"serve": "http-server -p 10101",
 		"test": "exit 0",
 		"bundle": "tsc -p tsconfig.release.json && terser ./+build/reels.debug.js > ./+build/reels.min.js && node ./+build/reels.debug.js --emit-css",
-		"publish": "npm run bundle && cd ./+build && cp ../package.json ./package.json && np && cd.."
+		"release": "npm run bundle && cd ./+build && cp ../package.json ./package.json && np && cd.."
 	}
 }
