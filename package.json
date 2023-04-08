@@ -3,10 +3,23 @@
 	"author": "Paul Gordon",
 	"description": "Utility library for working with HTML Reels",
 	"version": "1.0.0",
-	"main": "reels.js",
 	"license": "MIT",
+	"repository": {
+		"url": "https://github.com/paul-go/HTMLReels"
+	},
+	"main": "reels.js",
+	"types": "reels.d.ts",
+	"files": [
+		"reels.js",
+		"reels.min.js",
+		"reels.d.ts",
+		"reels.css",
+		"package.json"
+	],
 	"scripts": {
 		"serve": "http-server -p 10101",
-		"bundle": "tsc -p tsconfig.release.json && node ./+build/reels.debug.js --emit-css && terser ./+build/reels.debug.js > ./+build/reels.min.js"
+		"test": "echo 0",
+		"bundle": "tsc -p tsconfig.release.json && node ./+build/reels.debug.js --emit-css && terser ./+build/reels.debug.js > ./+build/reels.min.js",
+		"publish": "npm run bundle && cd ./+build && cp ../package.json ./package.json && np && cd.."
 	}
 }
