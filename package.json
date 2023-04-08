@@ -18,7 +18,7 @@
 	],
 	"scripts": {
 		"serve": "http-server -p 10101",
-		"test": "echo 0",
+		"test": "exit 0",
 		"bundle": "tsc -p tsconfig.release.json && terser ./+build/reels.debug.js > ./+build/reels.min.js && node ./+build/reels.debug.js --emit-css",
 		"publish": "npm run bundle && cd ./+build && cp ../package.json ./package.json && np && cd.."
 	}
