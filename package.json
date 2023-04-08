@@ -2,7 +2,7 @@
 	"name": "htmlreels",
 	"author": "Paul Gordon",
 	"description": "Utility library for working with HTML Reels",
-	"version": "1.0.1",
+	"version": "1.0.3",
 	"license": "MIT",
 	"repository": {
 		"url": "https://github.com/paul-go/HTMLReels"
