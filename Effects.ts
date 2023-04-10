@@ -52,6 +52,14 @@ namespace Reels
 			scroll-snap-stop: always;
 			height: 100%;
 		}
+		SECTION[src], SECTION[data-src]
+		{
+			background-color: black !important;
+		}
+		SECTION[src] *, SECTION[data-src] *
+		{
+			display: none !important;
+		}
 		SECTION.${StandardClasses.long}
 		{
 			height: auto;
@@ -97,13 +105,15 @@ namespace Reels
 	if (typeof document === "undefined") return;
 	
 	/**
-	 * 
+	 * Returns the standard Reel CSS embedded within a <style> element.
+	 * This <style> element should be inserted somewhere into the document
+	 * in order for it to 
 	 */
-	export function appendStandardCss(target: HTMLElement = document.head)
+	export function getStandardCss()
 	{
 		const style = document.createElement("style");
 		style.textContent = standardCss;
-		target.append(style);
+		return style;
 	}
 	
 	/**

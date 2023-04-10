@@ -14,11 +14,6 @@ namespace Reels
 			private readonly baseHref: string)
 		{ }
 		
-		/**
-		 * Whether scripts and inline frames should be stripped from output.
-		 */
-		enableSecurity = true;
-		
 		/** */
 		read()
 		{
@@ -31,18 +26,15 @@ namespace Reels
 				if (t === "frame" || t === "frameset")
 					return null;
 				
-				if (this.enableSecurity)
+				if (t === "script" || t === "iframe" || t === "portal")
+					return null;
+				
+				if (t === "noscript")
 				{
-					if (t === "script" || t === "iframe" || t === "portal")
-						return null;
-					
-					if (t === "noscript")
-					{
-						return Hot.div(
-							Array.from(e.attributes),
-							Array.from(e.children)
-						);
-					}
+					return Hot.div(
+						Array.from(e.attributes),
+						Array.from(e.children)
+					);
 				}
 				
 				return e;
@@ -50,7 +42,7 @@ namespace Reels
 			
 			reader.trapAttribute((name, value, element) =>
 			{
-				if (this.enableSecurity && name.startsWith("on"))
+				if (name.startsWith("on"))
 					return null;
 				
 				const tag = element.tagName.toLowerCase();

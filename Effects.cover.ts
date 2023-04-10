@@ -4,8 +4,7 @@ namespace Reels.Cover
 	/** */
 	export function coverReelSingle()
 	{
-		const hot = new Hot();
-		Reels.appendStandardCss();
+		const hot = setupCover();
 		
 		hot.style(
 			"*", {
@@ -73,8 +72,7 @@ namespace Reels.Cover
 	/** */
 	export function coverReelProgressFunctions()
 	{
-		const hot = new Hot();
-		Reels.appendStandardCss();
+		const hot = setupCover();
 		
 		document.body.append(
 			hot.style(
@@ -115,9 +113,7 @@ namespace Reels.Cover
 	/** */
 	export function coverReelFadeInOut()
 	{
-		const hot = new Hot();
-		Reels.appendStandardCss();
-		setupCover();
+		const hot = setupCover();
 		
 		document.body.append(
 			hot.section(
@@ -140,9 +136,7 @@ namespace Reels.Cover
 	/** */
 	export function coverReelMoveAcross()
 	{
-		const hot = new Hot();
-		Reels.appendStandardCss();
-		setupCover();
+		const hot = setupCover();
 		
 		document.body.append(
 			hot.section(
@@ -165,9 +159,7 @@ namespace Reels.Cover
 	/** */
 	export function coverReelFixed()
 	{
-		const hot = new Hot();
-		Reels.appendStandardCss();
-		setupCover();
+		const hot = setupCover();
 		
 		document.body.append(
 			hot.section(
@@ -192,6 +184,7 @@ namespace Reels.Cover
 	/** */
 	function setupCover()
 	{
+		document.head.append(Reels.getStandardCss());
 		const hot = new Hot();
 		
 		hot.style(
@@ -221,5 +214,7 @@ namespace Reels.Cover
 				backgroundColor: "#444",
 			},
 		).attach();
+		
+		return hot;
 	}
 }

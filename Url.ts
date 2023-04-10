@@ -45,5 +45,28 @@ namespace Reels
 				return null as never;
 			}
 		}
+		
+		/**
+		 * Gets the base URL of the document loaded into the current browser window.
+		 * Accounts for any HTML <base> tags that may be defined within the document.
+		 */
+		export function getCurrent()
+		{
+			if (storedUrl)
+				return storedUrl;
+			
+			let url = Url.folderOf(document.URL);
+			
+			const base = document.querySelector("base[href]");
+			if (base)
+			{
+				const href = base.getAttribute("href") || "";
+				if (href)
+					url = Url.resolve(href, url);
+			}
+			
+			return storedUrl = url;
+		}
+		let storedUrl = "";
 	}
 }
