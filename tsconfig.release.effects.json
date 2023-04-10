@@ -1,0 +1,9 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"outFile": "+build/reels.effects.js",
+	},
+	"include": [
+		"Effects.ts"
+	]
+}
