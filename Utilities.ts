@@ -147,6 +147,7 @@ namespace Reels
 					.split("\n")
 					.map(s => s.trim())
 					.filter(s => !!s)
+					.filter(s => s.startsWith("#"))
 					.map(s => Url.resolve(s, Url.folderOf(feedUrl))));
 				
 				bytesRead = fetchResult.text.length || 0;
