@@ -52,7 +52,7 @@ namespace Reels
 			scroll-snap-stop: always;
 			height: 100%;
 		}
-		SECTION[src], SECTION[data-src]
+		[if*="0.2"] SECTION[src], SECTION[data-src]
 		{
 			background-color: black !important;
 		}
@@ -145,7 +145,8 @@ namespace Reels
 			}
 		}
 		
-		captureTriggerClasses();
+		//captureTriggerClasses();
+		captureRanges(document.body);
 	}
 	
 	/** */
@@ -162,79 +163,71 @@ namespace Reels
 		section.append(strip);
 	}
 	
+	//# Ranges
+	
 	/** */
-	function captureTriggerClasses()
+	function captureRanges(container: ParentNode)
 	{
-		const qsa = document.querySelectorAll("[class*=\\@]");
-		if (qsa.length === 0)
-			return;
-		
-		const targets = Array.from(qsa) as HTMLElement[];
-		for (const target of targets)
+		for (const rule of eachCssRule(container))
 		{
-			if (triggerClassMap.has(target))
-				continue;
-			
-			const section = target.closest("SECTION");
-			if (!(section instanceof HTMLElement))
-				continue;
-			
-			for (const cls of Array.from(target.classList))
+			const matches = rule.selectorText.match(reg);
+			for (const match of matches || [])
 			{
-				const parts = cls.split("@");
-				if (parts.length !== 2)
-					continue;
+				const parts = match
+					.replace(/[^\.,\d]/g, "")
+					.split(`,`);
 				
-				const range = parts[1].split("..");
+				let low = parts[0] === "" ? -1 : Number(parts[0]) || -1;
+				let high = parts[1] === "" ? 1 : Number(parts[1]) || 1;
 				
-				if (range[0] === "")
-					range[0] = "-1";
+				low = Math.max(-1, Math.min(1, low));
+				high = Math.min(1, Math.max(-1, high));
 				
-				if (range.length === 1)
-					range.push("1");
+				if (high < low)
+					low = high;
 				
-				if (range[1] === "")
-					range[1] = "1";
-				
-				let low = Number(range[0]);
-				let high = Number(range[1]);
-				
-				if (low !== low || high !== high)
-				{
-					console.error("Invalid range: " + cls);
-					continue;
-				}
-				
-				if (low > high)
-					[low, high] = [high, low];
-				
-				const tcls: ITriggerClass = { section, target, low, high, class: parts[0] };
-				let triggerClasses = triggerClassMap.get(target);
-				if (!triggerClasses)
-				{
-					triggerClasses = [tcls];
-				}
-				else
-				{
-					triggerClasses.push(tcls);
-					triggerClasses.sort((a, b) => b.low - a.low);
-				}
-				
-				triggerClassMap.set(section, triggerClasses);
+				rangePairs.set(low + `,` + high, [low, high]);
 			}
 		}
 	}
 	
+	const reg = /\[\s*if\s*~=("|')-?(1|0|0\.\d+),\-?(1|0|0\.\d+)("|')]/g;
+	const rangePairs = new Map<string, [number, number]>();
+	
 	/** */
-	interface ITriggerClass
+	function * eachCssRule(container: ParentNode)
 	{
-		readonly section: HTMLElement;
-		readonly target: HTMLElement;
-		readonly low: number;
-		readonly high: number;
-		readonly class: string;
+		const sheetContainers = [
+			...Array.from(container.querySelectorAll("STYLE")) as HTMLStyleElement[],
+			...Array.from(container.querySelectorAll("LINK")) as HTMLLinkElement[],
+		];
+		
+		const sheets = sheetContainers
+			.filter(e => !processedSheetContainers.has(e))
+			.map(e => e.sheet)
+			.filter((sh): sh is CSSStyleSheet => !!sh);
+		
+		sheetContainers.forEach(e => processedSheetContainers.add(e));
+		
+		function * recurse(rules: CSSRuleList)
+		{
+			for (let i = -1; ++i < rules.length;)
+			{
+				const rule = rules[i];
+				if (rule instanceof CSSGroupingRule)
+					recurse(rule.cssRules);
+				
+				else if (rule instanceof CSSStyleRule)
+					yield rule;
+			}
+		};
+		
+		for (const sheet of sheets)
+			yield * recurse(sheet.cssRules);
 	}
-	const triggerClassMap = new Map<HTMLElement, ITriggerClass[]>();
+	const processedSheetContainers = new WeakSet<HTMLElement>();
+	
+	//# Intersection Observer
 	
 	const threshold = new Array(1000).fill(0).map((_, i) => i / 1000);
 	const io = new IntersectionObserver(records =>
@@ -292,10 +285,13 @@ namespace Reels
 			e.style.setProperty("--inc", inc.toString());
 			e.style.setProperty("--dec", (inc * -1).toString());
 			
-			const tcs = triggerClassMap.get(e);
-			if (tcs)
-				for (const tc of tcs)
-					tc.target.classList.toggle(tc.class, inc >= tc.low && inc <= tc.high);
+			const ifAttr: string[] = [];
+			
+			for (const [low, high] of rangePairs.values())
+				if (inc >= low && inc <= high)
+					ifAttr.push(low + `,` + high);
+			
+			e.setAttribute("if", ifAttr.join(" "));
 		}
 	},
 	{ threshold });

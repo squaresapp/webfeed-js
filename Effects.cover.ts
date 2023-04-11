@@ -182,6 +182,35 @@ namespace Reels.Cover
 	}
 	
 	/** */
+	export function coverReelRanges()
+	{
+		const hot = setupCover();
+		
+		document.body.append(
+			hot.style(
+				".s1[if~='0.1,1'], .s1[if~='1,1']", {
+					color: "red"
+				}
+			),
+			hot.section(
+				"s1",
+				hot.div(
+					{
+						position: "absolute",
+						bottom: 0,
+					},
+					new Text("Becomes red")
+				)
+			),
+			hot.section(
+				{
+					backgroundColor: "crimson"
+				}
+			),
+		);
+	}
+	
+	/** */
 	function setupCover()
 	{
 		document.head.append(Reels.getStandardCss());
