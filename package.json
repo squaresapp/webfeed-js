@@ -7,6 +7,9 @@
 	"repository": {
 		"url": "https://github.com/paul-go/HTMLReels"
 	},
+	"bugs": {
+		"url": "https://github.com/paul-go/HTMLReels/issues"
+	},
 	"main": "reels.js",
 	"types": "reels.d.ts",
 	"files": [
