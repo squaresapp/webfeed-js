@@ -35,15 +35,20 @@ namespace Reels
 	}
 	
 	export const standardCss = `
+		HTML, .${StandardClasses.body}
+		{
+			scroll-snap-type: y mandatory;
+		}
 		HTML, BODY, .${StandardClasses.body}
 		{
 			margin: 0;
+			padding: 0;
 			height: 100%;
-			scroll-snap-type: y mandatory;
 		}
 		HTML
 		{
 			overflow-y: auto;
+			height: 100%;
 		}
 		SECTION
 		{

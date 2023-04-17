@@ -56,10 +56,28 @@ namespace Reels
 			return null;
 		
 		const sections = getElements("BODY > SECTION", doc);
-		const fe = getElements("LINK[rel=feed]");
-		const head = getElements("LINK, STYLE", doc.head).filter(e => !fe.includes(e));
+		const feeds = getFeedsFromDocument(doc);
+		const feedsUrls = feeds.map(f => f.href);
+		const head = getElements("LINK, STYLE", doc.head)
+			.filter(e => !feedsUrls.includes(e.getAttribute("href") || ""));
 		
+		return {
+			url,
+			document: doc,
+			head,
+			feeds,
+			sections,
+		};
+	}
+	
+	/**
+	 * Scans a document for <link> tags that refer to feeds of HTML Reels.
+	 */
+	export function getFeedsFromDocument(doc = document)
+	{
 		const feeds: IFeedInfo[] = [];
+		const fe = getElements("LINK[rel=feed]", doc);
+		
 		for (const e of fe)
 		{
 			const href = e.getAttribute("href");
@@ -73,13 +91,7 @@ namespace Reels
 			feeds.push({ visible, subscribable, href });
 		}
 		
-		return {
-			url,
-			document: doc,
-			head,
-			feeds,
-			sections,
-		};
+		return feeds;
 	}
 	
 	/**
@@ -158,6 +170,17 @@ namespace Reels
 	}
 	
 	/**
+	 * Reads the poster <section> stored in the Reel at the specified URL.
+	 */
+	export async function getPosterFromUrl(reelUrl: string)
+	{
+		const reel = await getReelFromUrl(reelUrl);
+		return reel?.sections.length ?
+			Reels.getSandboxedElement([...reel.head, reel.sections[0]], reel.url) :
+			null;
+	}
+	
+	/**
 	 * Reads posters from a feed text file located at the specified URL.
 	 * 
 	 * @returns An async generator function that iterates through
@@ -180,14 +203,139 @@ namespace Reels
 	}
 	
 	/**
-	 * Reads the poster <section> stored in the Reel at the specified URL.
+	 * 
 	 */
-	export async function getPosterFromUrl(reelUrl: string)
+	export async function getOmniviewFromFeedUrl(feedUrl: string)
 	{
-		const reel = await getReelFromUrl(reelUrl);
-		return reel?.sections.length ?
-			Reels.getSandboxedElement([...reel.head, reel.sections[0]], reel.url) :
-			null;
+		const feed = await Reels.getFeedFromUrl(feedUrl);
+		return getOmniviewFromFeed(feed.urls);
+	}
+	
+	/**
+	 * 
+	 */
+	export function getOmniviewFromFeed(urls: string[])
+	{
+		if (typeof Omniview === "undefined")
+			throw new Error("Omniview library not found.");
+		
+		const hot = new Hot();
+		
+		const omniview = new Omniview.Class({
+			getPoster: index =>
+			{
+				if (index >= urls.length)
+					return null;
+				
+				return new Promise(async resolve =>
+				{
+					const poster = await Reels.getPosterFromUrl(urls[index]);
+					resolve(poster || getMissingPoster());
+				});
+			},
+			fillBody: async (fillElement, selectedElement, index) =>
+			{
+				const url = urls[index];
+				const reel = await Reels.getReelFromUrl(url);
+				if (!reel)
+					return selectedElement.append(getMissingPoster());
+				
+				fillElement.append(
+					Reels.getSandboxedElement([...reel.head, ...reel.sections], reel.url)
+				);
+			}
+		});
+		
+		const out = hot.div(
+			"omniview-container",
+			{
+				// This overrides the "position: fixed" setting which is the
+				// default for an omniview. The omniview's default fixed
+				// setting does seem a bit broken. Further investigation
+				// is needed to determine if this is appropriate.
+				position: "relative",
+				scrollSnapAlign: "start",
+				scrollSnapStop: "always",
+				minHeight: "200vh",
+			},
+			hot.get(omniview)(
+				{
+					position: "relative",
+				},
+				hot.on("connected", () =>
+				{
+					omniview.gotoPosters();
+				}),
+			),
+			hot.div(
+				{
+					position: "absolute",
+					left: 0,
+					right: 0,
+					bottom: 0,
+					scrollSnapAlign: "end",
+					scrollSnapStop: "always",
+				}
+			),
+		);
+		
+		const head = omniview.head;
+		let lastY = -1;
+		let lastDirection = 0;
+		window.addEventListener("scroll", () => window.requestAnimationFrame(() =>
+		{
+			if (omniview.mode !== Omniview.OmniviewMode.posters)
+				return;
+			
+			const y = window.scrollY;
+			if (y === lastY)
+				return;
+			
+			const direction = y > lastY ? 1 : -1;
+			let omniviewVisible = head.getBoundingClientRect().top <= 0;
+			
+			if (omniviewVisible)
+			{
+				if (direction === 1)
+					omniview.scrollingAncestor.style.scrollSnapType = "none";
+				
+				else if (direction === -1 && lastDirection === 1)
+					omniview.scrollingAncestor.style.removeProperty("scroll-snap-type");
+			}
+			
+			lastDirection = direction;
+			lastY = y;
+			
+			// Expand the size of the omniview container, in order to push the
+			// footer snapper div downward so that it aligns with the bottom
+			// of the omniview posters.
+			const rows = Math.ceil(omniview.posterCount / omniview.size);
+			const vh = rows * (100 / omniview.size);
+			out.style.minHeight = vh + "vh";
+		}));
+		
+		return out;
+	}
+	
+	/** */
+	function getMissingPoster()
+	{
+		const hot = new Hot();
+		return hot.div(
+			{
+				position: "absolute",
+				top: 0,
+				right: 0,
+				bottom: 0,
+				left: 0,
+				width: "fit-content",
+				height: "fit-content",
+				margin: "auto",
+				fontSize: "10vw",
+				fontWeight: 900,
+			},
+			new Text("✕")
+		);
 	}
 	
 	//# Generic

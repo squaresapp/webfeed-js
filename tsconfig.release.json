@@ -9,5 +9,6 @@
 	],
 	"references": [
 		{ "path": "../Hot" },
+		{ "path": "../Omniview" },
 	]
 }

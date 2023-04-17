@@ -1,4 +1,4 @@
-/// <reference path="Effects.ts" />
+/// <reference path="../Effects.ts" />
 
 namespace Reels.Cover
 {

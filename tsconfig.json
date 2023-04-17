@@ -27,5 +27,7 @@
 	],
 	"references": [
 		{ "path": "../Hot" },
+		{ "path": "../Hotdom" },
+		{ "path": "../Omniview" }
 	]
 }

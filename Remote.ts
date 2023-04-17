@@ -2,20 +2,6 @@
 namespace Reels
 {
 	/**
-	 * Main entry point for when the reals.js script is 
-	 * embedded within a web page.
-	 */
-	if (typeof document !== "undefined" && 
-		typeof window !== "undefined" &&
-		document.readyState !== "complete")
-	{
-		window.addEventListener("DOMContentLoaded", () =>
-		{
-			Reels.resolveRemoteSections();
-		});
-	}
-	
-	/**
 	 * Returns an array of remote <section> elements that exist underneath
 	 * the specified container element. Defaults to the <body> element in the
 	 * current document if the container argument is omitted.

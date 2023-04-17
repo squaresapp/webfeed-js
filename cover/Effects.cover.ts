@@ -211,7 +211,7 @@ namespace Reels.Cover
 	}
 	
 	/** */
-	function setupCover()
+	export function setupCover()
 	{
 		document.head.append(Reels.getStandardCss());
 		const hot = new Hot();
