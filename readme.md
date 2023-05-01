@@ -24,6 +24,14 @@ Below is a basic example of an HTML Reel being scrolled. You can see the source 
 
 Effects like these only require a few lines of code. Check out the [effects documentation](docs/effects.md) for more information.
 
+## Feed Display
+
+The reels.js library has the ability to render an *Omniview*, which is a tiled view of previews of other posts in a feed-like format. The video below demonstrates this:
+
+<p align="center">
+	<img src="/docs/omniview.gif" alt="HTML Reels Example">
+</p>
+
 # How HTML Reels Compare with...
 
 ## IndieWeb

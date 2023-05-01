@@ -8,13 +8,20 @@ namespace Reels.Cover
 		const feed = Cover.generateFeedServer();
 		const omniview = Reels.getOmniviewFromFeed(feed);
 		
+		const style: Hot.Style = {
+			textAlign: "center",
+			fontSize: "10vw",
+			fontWeight: 900,
+			lineHeight: "100vh",
+		};
+		
 		document.body.append(
 			hot.section(
-				{ backgroundColor: "crimson" },
+				{ backgroundColor: "crimson", ...style },
 				hot.text("Poster"),
 			),
 			hot.section(
-				{ backgroundColor: "orange" },
+				{ backgroundColor: "orange", ...style },
 				hot.text("Second section."),
 			),
 			omniview
