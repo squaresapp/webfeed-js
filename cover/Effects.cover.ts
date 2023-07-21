@@ -1,5 +1,5 @@
 
-namespace Reels.Cover
+namespace Syndi.Cover
 {
 	/** */
 	export function coverReelSingle()
@@ -213,7 +213,7 @@ namespace Reels.Cover
 	/** */
 	export function setupCover()
 	{
-		document.head.append(Reels.getStandardCss());
+		document.head.append(Syndi.getStandardCss());
 		const hot = new Hot();
 		
 		hot.style(

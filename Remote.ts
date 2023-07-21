@@ -1,5 +1,5 @@
 
-namespace Reels
+namespace Syndi
 {
 	/**
 	 * Returns an array of remote <section> elements that exist underneath
@@ -31,16 +31,16 @@ namespace Reels
 		container: ParentNode = document,
 		documentUrl = Url.getCurrent())
 	{
-		const remoteSections = Reels.getRemoteSectionElements(container);
+		const remoteSections = Syndi.getRemoteSectionElements(container);
 		for (const remoteSection of remoteSections)
 		{
 			block:
 			{
-				const remoteUrl = Reels.getRemoteSectionSource(remoteSection, documentUrl);
+				const remoteUrl = Syndi.getRemoteSectionSource(remoteSection, documentUrl);
 				if (!remoteUrl)
 					break block;
 				
-				const poster = await Reels.getPosterFromUrl(remoteUrl);
+				const poster = await Syndi.getPosterFromUrl(remoteUrl);
 				if (!poster)
 					break block;
 				

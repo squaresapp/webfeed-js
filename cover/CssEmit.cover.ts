@@ -1,6 +1,6 @@
 /// <reference path="../Effects.ts" />
 
-namespace Reels.Cover
+namespace Syndi.Cover
 {
 	/** */
 	export function coverReelsCssEmit()
@@ -8,7 +8,7 @@ namespace Reels.Cover
 		const fs = require("fs") as typeof import("fs");
 		const path = require("path") as typeof import("path");
 		const out = path.join(process.cwd(), "+build/reels.css");
-		fs.writeFileSync(out, Reels.standardCss);
+		fs.writeFileSync(out, Syndi.standardCss);
 	}
 	
 	// Auto-run the cover function if called during the build script.

@@ -1,5 +1,5 @@
 
-namespace Reels
+namespace Syndi
 {
 	/**
 	 * An enumeration that defines the CSS classes that are used

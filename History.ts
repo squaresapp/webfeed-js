@@ -1,5 +1,5 @@
 
-namespace Reels
+namespace Syndi
 {
 	/**
 	 * A library which operates over the browser-supplied history.pushState()

@@ -1,5 +1,5 @@
 {
-	"name": "htmlreels",
+	"name": "syndi",
 	"author": "Paul Gordon",
 	"description": "Utility library for working with HTML Reels",
 	"version": "1.0.5",
@@ -10,23 +10,23 @@
 	"bugs": {
 		"url": "https://github.com/paul-go/HTMLReels/issues"
 	},
-	"main": "reels.js",
-	"types": "reels.d.ts",
+	"main": "syndi.js",
+	"types": "syndi.d.ts",
 	"files": [
-		"reels.js",
-		"reels.min.js",
-		"reels.effects.js",
-		"reels.effects.min.js",
-		"reels.d.ts",
-		"reels.css",
+		"syndi.js",
+		"syndi.min.js",
+		"syndi.effects.js",
+		"syndi.effects.min.js",
+		"syndi.d.ts",
+		"syndi.css",
 		"package.json"
 	],
 	"scripts": {
 		"serve": "http-server -p 10101",
 		"test": "exit 0",
-		"emit-css": "node ./+build/reels.debug.js --emit-css",
-		"bundle-effects": "tsc -p tsconfig.release.effects.json && terser ./+build/reels.effects.js > ./+build/reels.effects.min.js && npm run emit-css",
-		"bundle": "tsc -p tsconfig.release.json && terser ./+build/reels.js > ./+build/reels.min.js && npm run emit-css",
+		"emit-css": "node ./+build/syndi.debug.js --emit-css",
+		"bundle-effects": "tsc -p tsconfig.release.effects.json && terser ./+build/syndi.effects.js > ./+build/syndi.effects.min.js && npm run emit-css",
+		"bundle": "tsc -p tsconfig.release.json && terser ./+build/syndi.js > ./+build/syndi.min.js && npm run emit-css",
 		"release": "npm run bundle && cd ./+build && cp ../package.json ./package.json && np"
 	}
 }

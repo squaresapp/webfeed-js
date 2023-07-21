@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"outFile": "+build/reels.debug.js",
+		"outFile": "+build/syndi.debug.js",
 		"composite": true,
 		"module": "system",
 		"moduleResolution": "node",

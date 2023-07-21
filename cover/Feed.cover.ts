@@ -1,10 +1,10 @@
 
-namespace Reels.Cover
+namespace Syndi.Cover
 {
 	/** */
 	export async function coverReelsFeedMetadata()
 	{
-		const metaData = await Reels.getFeedMetaData("https://htmlreels.b-cdn.net/trees/index.txt");
+		const metaData = await Syndi.getFeedMetaData("https://htmlreels.b-cdn.net/trees/index.txt");
 	}
 	
 	/** */
@@ -12,7 +12,7 @@ namespace Reels.Cover
 	{
 		const hot = setupCover();
 		const feed = Cover.generateFeedServer();
-		const omniviewElement = Reels.getEmbeddedOmniviewFromFeed(feed);
+		const omniviewElement = Syndi.getEmbeddedOmniviewFromFeed(feed);
 		
 		const style: Hot.Style = {
 			textAlign: "center",

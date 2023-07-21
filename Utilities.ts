@@ -1,5 +1,5 @@
 
-namespace Reels
+namespace Syndi
 {
 	//# Reels
 	
@@ -12,7 +12,7 @@ namespace Reels
 		baseUrl: string)
 	{
 		const container = document.createElement("div");
-		const head: HTMLElement[] = [Reels.getStandardCss()];
+		const head: HTMLElement[] = [Syndi.getStandardCss()];
 		const body: HTMLElement[] = [];
 		const shadow = container.attachShadow({ mode: "open" });
 		
@@ -71,7 +71,7 @@ namespace Reels
 	}
 	
 	/**
-	 * Scans a document for <link> tags that refer to feeds of HTML Reels.
+	 * Scans a document for <link> tags that refer to feeds of HTML Syndi.
 	 */
 	export function getFeedsFromDocument(doc = document)
 	{
@@ -181,7 +181,7 @@ namespace Reels
 		
 		for (let safety = 1000; safety-- > 0;)
 		{
-			const httpContent = await Reels.getHttpContent(currentUrl);
+			const httpContent = await Syndi.getHttpContent(currentUrl);
 			if (httpContent)
 			{
 				const htmlContent = httpContent.text;
@@ -239,7 +239,7 @@ namespace Reels
 	{
 		const reel = await getReelFromUrl(reelUrl);
 		return reel?.sections.length ?
-			Reels.getSandboxedElement([...reel.head, reel.sections[0]], reel.url) :
+			Syndi.getSandboxedElement([...reel.head, reel.sections[0]], reel.url) :
 			null;
 	}
 	
@@ -252,12 +252,12 @@ namespace Reels
 	 */
 	export async function * getPostersFromFeed(feedUrl: string)
 	{
-		const readResult = await Reels.getFeedFromUrl(feedUrl);
+		const readResult = await Syndi.getFeedFromUrl(feedUrl);
 		for (const url of readResult.urls)
 		{
-			const reel = await Reels.getReelFromUrl(url);
+			const reel = await Syndi.getReelFromUrl(url);
 			const poster = reel?.sections.length ?
-				Reels.getSandboxedElement([...reel.head, reel.sections[0]], reel.url) :
+				Syndi.getSandboxedElement([...reel.head, reel.sections[0]], reel.url) :
 				null;
 			
 			if (poster)
@@ -367,19 +367,19 @@ namespace Reels
 				
 				return new Promise(async resolve =>
 				{
-					const poster = await Reels.getPosterFromUrl(urls[index]);
+					const poster = await Syndi.getPosterFromUrl(urls[index]);
 					resolve(poster || getErrorPoster());
 				});
 			},
 			fillBody: async (fillElement, selectedElement, index) =>
 			{
 				const url = urls[index];
-				const reel = await Reels.getReelFromUrl(url);
+				const reel = await Syndi.getReelFromUrl(url);
 				if (!reel)
 					return selectedElement.append(getErrorPoster());
 				
 				fillElement.append(
-					Reels.getSandboxedElement([...reel.head, ...reel.sections], reel.url)
+					Syndi.getSandboxedElement([...reel.head, ...reel.sections], reel.url)
 				);
 			}
 		};

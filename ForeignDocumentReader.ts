@@ -1,5 +1,5 @@
 
-namespace Reels
+namespace Syndi
 {
 	/**
 	 * A class that reads a raw HTML document, and provides

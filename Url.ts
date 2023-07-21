@@ -1,5 +1,5 @@
 
-namespace Reels
+namespace Syndi
 {
 	/**
 	 * A namespace of functions that perform URL manipulation.

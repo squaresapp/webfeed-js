@@ -1,5 +1,5 @@
 
-namespace Reels
+namespace Syndi
 {
 	/**
 	 * A class that wraps a ForeignDocumentReader, and which converts

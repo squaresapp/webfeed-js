@@ -1,5 +1,5 @@
 
-namespace Reels.Cover
+namespace Syndi.Cover
 {
 	/** */
 	export function generateFeedServer()
@@ -24,7 +24,7 @@ namespace Reels.Cover
 		
 		const nodes: HTMLElement[] = [
 			hot.style(
-				hot.text(Reels.getStandardCss().textContent || "")
+				hot.text(Syndi.getStandardCss().textContent || "")
 			),
 			hot.style(
 				"SECTION", {

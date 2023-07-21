@@ -1,5 +1,5 @@
 
-namespace Reels.Cover
+namespace Syndi.Cover
 {
 	/** */
 	export async function coverHistory()

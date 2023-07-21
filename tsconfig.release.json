@@ -1,7 +1,7 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"outFile": "+build/reels.js",
+		"outFile": "+build/syndi.js",
 	},
 	"exclude": [
 		"**/+build/**/*.ts",

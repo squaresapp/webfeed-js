@@ -1,5 +1,5 @@
 
-namespace Reels.Cover
+namespace Syndi.Cover
 {
 	/**
 	 * Launches an HTTP server on the next available

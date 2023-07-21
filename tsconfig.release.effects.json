@@ -1,7 +1,7 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"outFile": "+build/reels.effects.js",
+		"outFile": "+build/syndi.effects.js",
 	},
 	"include": [
 		"Effects.ts"
