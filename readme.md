@@ -2,6 +2,8 @@
 	<img src="readme-poster.png" alt="HTML Reels Poster Image">
 </p>
 
+**Note**: This readme is out of date and needs to be updated to reflect the fact that this repository now contains a library for consuming HTML Syndications.
+
 # HTML Reels
 
 HTML Reels is a series of base primitives for building scrollable cinematic hypermedia pages, as well as a means to construct lightweight feeds of said pages. The feed format is extremely simple and can be connected to a compatible reader app, which allow HTML Reels to be syndicated directly to a user's device. HTML Reels are a foundational idea that forms the basis of a realistic future social media paradigm where *we the users* own our content and the means of its distribution.
