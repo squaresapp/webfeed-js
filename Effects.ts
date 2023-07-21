@@ -301,5 +301,12 @@ namespace Reels
 	},
 	{ threshold });
 	
-	registerRoot(document.body);
+	if (document.readyState === "loading")
+	{
+		document.addEventListener("readystatechange", () =>
+		{
+			registerRoot(document.body);
+		});
+	}
+	else registerRoot(document.body);
 }

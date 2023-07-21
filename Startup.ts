@@ -21,12 +21,13 @@ namespace Reels
 		if (!(last instanceof HTMLElement))
 			return;
 		
-		const feeds = Reels.getFeedsFromDocument();
-		for (const feed of feeds)
+		const feedInfos = Reels.getFeedsFromDocument();
+		for (const feedInfo of feedInfos)
 		{
-			if (feed.visible)
+			if (feedInfo.visible)
 			{
-				const omniview = await Reels.getOmniviewFromFeedUrl(feed.href);
+				const { urls } = await Reels.getFeedFromUrl(feedInfo.href);
+				const omniview = Reels.getEmbeddedOmniviewFromFeed(urls);
 				last.insertAdjacentElement("afterend", omniview);
 				last = omniview;
 			}

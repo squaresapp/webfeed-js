@@ -159,7 +159,7 @@ namespace Reels
 					.split("\n")
 					.map(s => s.trim())
 					.filter(s => !!s)
-					.filter(s => s.startsWith("#"))
+					.filter(s => !s.startsWith("#"))
 					.map(s => Url.resolve(s, Url.folderOf(feedUrl))));
 				
 				bytesRead = fetchResult.text.length || 0;
@@ -167,6 +167,69 @@ namespace Reels
 		}
 		
 		return { urls, bytesRead };
+	}
+	
+	/**
+	 * Finds the meta data associated with the feed at the specified URL.
+	 * The algorithm used is a upscan of the folder structure of the specified URL,
+	 * starting at it's base directory, and scanning upwards until the root
+	 * domain is reached.
+	 */
+	export async function getFeedMetaData(feedUrl: string)
+	{
+		let currentUrl = Url.folderOf(feedUrl);
+		
+		for (let safety = 1000; safety-- > 0;)
+		{
+			const httpContent = await Reels.getHttpContent(currentUrl);
+			if (httpContent)
+			{
+				const htmlContent = httpContent.text;
+				const reader = new ForeignDocumentReader(htmlContent);
+				let standardDescription = "";
+				let feedDescription = "";
+				let standardIcon = "";
+				let feedIcon = "";
+				
+				reader.trapElement(element =>
+				{
+					if (element.nodeName === "meta")
+					{
+						const name = element.getAttribute("name");
+						
+						if (name === "feed-description")
+							feedDescription = element.getAttribute("content") || "";
+						
+						else if (name === "description")
+							standardDescription = element.getAttribute("content") || "";
+					}
+					else if (element.nodeName === "link")
+					{
+						const rel = element.getAttribute("rel");
+						
+						if (rel === "feed-icon")
+							feedIcon = element.getAttribute("href") || "";
+						
+						else if (rel === "icon")
+							standardIcon = element.getAttribute("href") || "";
+					}
+				});
+				
+				const description = feedDescription || standardDescription;
+				const icon = feedIcon || standardIcon;
+				
+				if (description || icon)
+					return { description, icon };
+			}
+		
+			const url = new URL("..", currentUrl);
+			if (currentUrl === url.toString())
+				break;
+			
+			currentUrl = url.toString();
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -203,70 +266,36 @@ namespace Reels
 	}
 	
 	/**
-	 * 
+	 * Returns an Omniview that is automatically populated with the
+	 * posters from the specified URLs. The Omniview is wrapped inside
+	 * and element that makes the Omniview suitable for embedding on
+	 * a public website.
 	 */
-	export async function getOmniviewFromFeedUrl(feedUrl: string)
-	{
-		const feed = await Reels.getFeedFromUrl(feedUrl);
-		return getOmniviewFromFeed(feed.urls);
-	}
-	
-	/**
-	 * 
-	 */
-	export function getOmniviewFromFeed(urls: string[])
+	export function getEmbeddedOmniviewFromFeed(
+		urls: string[],
+		omniviewOptions: Partial<IOmniviewOptions> = {})
 	{
 		if (typeof Omniview === "undefined")
 			throw new Error("Omniview library not found.");
 		
 		const hot = new Hot();
-		
-		const omniview = new Omniview.Class({
-			getPoster: index =>
-			{
-				if (index >= urls.length)
-					return null;
-				
-				return new Promise(async resolve =>
-				{
-					const poster = await Reels.getPosterFromUrl(urls[index]);
-					resolve(poster || getMissingPoster());
-				});
-			},
-			fillBody: async (fillElement, selectedElement, index) =>
-			{
-				const url = urls[index];
-				const reel = await Reels.getReelFromUrl(url);
-				if (!reel)
-					return selectedElement.append(getMissingPoster());
-				
-				fillElement.append(
-					Reels.getSandboxedElement([...reel.head, ...reel.sections], reel.url)
-				);
-			}
-		});
+		const omniview = getOmniviewFromFeed(urls, omniviewOptions) as Omniview.Class;
 		
 		const out = hot.div(
 			"omniview-container",
 			{
-				// This overrides the "position: fixed" setting which is the
-				// default for an omniview. The omniview's default fixed
-				// setting does seem a bit broken. Further investigation
-				// is needed to determine if this is appropriate.
 				position: "relative",
 				scrollSnapAlign: "start",
 				scrollSnapStop: "always",
 				minHeight: "200vh",
 			},
-			hot.get(omniview)(
-				{
-					position: "relative",
-				},
-				hot.on("connected", () =>
-				{
-					omniview.gotoPosters();
-				}),
-			),
+			// This overrides the "position: fixed" setting which is the
+			// default for an omniview. The omniview's default fixed
+			// setting does seem a bit broken. Further investigation
+			// is needed to determine if this is appropriate.
+			hot.get(omniview)({ position: "relative" }),
+			// Places an extra div at the bottom of the posters list
+			// so that scroll-snapping works better.
 			hot.div(
 				{
 					position: "absolute",
@@ -317,25 +346,112 @@ namespace Reels
 		return out;
 	}
 	
-	/** */
-	function getMissingPoster()
+	/**
+	 * Returns an Omniview class that gets populated with the
+	 * posters from the specified URLs.
+	 */
+	export function getOmniviewFromFeed(
+		urls: string[],
+		omniviewOptions: Partial<IOmniviewOptions>): unknown
 	{
+		if (typeof Omniview === "undefined")
+			throw new Error("Omniview library not found.");
+		
 		const hot = new Hot();
-		return hot.div(
+		
+		const defaultOptions: IOmniviewOptions = {
+			getPoster: index =>
 			{
-				position: "absolute",
-				top: 0,
-				right: 0,
-				bottom: 0,
-				left: 0,
-				width: "fit-content",
-				height: "fit-content",
-				margin: "auto",
-				fontSize: "10vw",
-				fontWeight: 900,
+				if (index >= urls.length)
+					return null;
+				
+				return new Promise(async resolve =>
+				{
+					const poster = await Reels.getPosterFromUrl(urls[index]);
+					resolve(poster || getErrorPoster());
+				});
 			},
-			new Text("✕")
+			fillBody: async (fillElement, selectedElement, index) =>
+			{
+				const url = urls[index];
+				const reel = await Reels.getReelFromUrl(url);
+				if (!reel)
+					return selectedElement.append(getErrorPoster());
+				
+				fillElement.append(
+					Reels.getSandboxedElement([...reel.head, ...reel.sections], reel.url)
+				);
+			}
+		};
+		
+		const mergedOptions = Object.assign(omniviewOptions, defaultOptions);
+		const omniview = new Omniview.Class(mergedOptions);
+		
+		hot.get(omniview)(
+			hot.on("connected", () => omniview.gotoPosters())
 		);
+		
+		return omniview;
+	}
+	
+	/** */
+	export interface IOmniviewOptions
+	{
+		/**
+		 * Specifies the index of the topmost and leftmost poster in the poster
+		 * list when the Omniview is first rendered. Numbers greater than zero
+		 * allow back-tracking.
+		 */
+		anchorIndex?: number;
+		
+		/**
+		 * A required function that returns the poster frame for a given position
+		 * in the Omniview.
+		 */
+		getPoster: GetPosterFn;
+		
+		/**
+		 * A required function that causes bodies to be filled with content
+		 * when the poster is selected.
+		 */
+		fillBody: FillFn;
+		
+		/**
+		 * Allows API consumers to supply their own container element for bodies
+		 * to be placed in custom locations.
+		 */
+		getBodyContainer?: () => HTMLElement;
+	}
+
+	/**
+	 * Returns a poster HTMLElement for the given index in the stream.
+	 * The function should return null to stop looking for posters at or
+	 * beyond the specified index.
+	 */
+	export type GetPosterFn = (index: number) => Promise<HTMLElement> | HTMLElement | null;
+	
+	/** */
+	export type FillFn = (fillElement: HTMLElement, selectedElement: HTMLElement, index: number) => void | Promise<void>;
+	
+	/**
+	 * Renders a placeholder poster for when the item couldn't be loaded.
+	 */
+	export function getErrorPoster()
+	{
+		const div = document.createElement("div");
+		const s = div.style;
+		s.position = "absolute";
+		s.top = "0";
+		s.right = "0";
+		s.bottom = "0";
+		s.left = "0";
+		s.width = "fit-content";
+		s.height = "fit-content";
+		s.margin = "auto";
+		s.fontSize = "10vw";
+		s.fontWeight = "900";
+		div.append(new Text("✕"));
+		return div;
 	}
 	
 	//# Generic
@@ -369,7 +485,18 @@ namespace Reels
 				return null;
 			}
 			
-			const text = await fetchResult.text();
+			let text = "";
+			
+			try
+			{
+				text = await fetchResult.text();
+			}
+			catch (e)
+			{
+				console.error("Fetch failed: " + relativeUri);
+				return null;
+			}
+			
 			return {
 				headers: fetchResult.headers,
 				text,

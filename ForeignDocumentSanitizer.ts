@@ -24,16 +24,16 @@ namespace Reels
 				const t = e.tagName.toLowerCase();
 				
 				if (t === "frame" || t === "frameset")
-					return null;
+					return;
 				
 				if (t === "script" || t === "iframe" || t === "portal")
-					return null;
+					return;
 				
 				if (t === "noscript")
 				{
 					return Hot.div(
 						Array.from(e.attributes),
-						Array.from(e.children)
+						Array.from(e.children),
 					);
 				}
 				
@@ -43,7 +43,7 @@ namespace Reels
 			reader.trapAttribute((name, value, element) =>
 			{
 				if (name.startsWith("on"))
-					return null;
+					return;
 				
 				const tag = element.tagName.toLowerCase();
 				

@@ -2,11 +2,17 @@
 namespace Reels.Cover
 {
 	/** */
+	export async function coverReelsFeedMetadata()
+	{
+		const metaData = await Reels.getFeedMetaData("https://htmlreels.b-cdn.net/trees/index.txt");
+	}
+	
+	/** */
 	export function coverReelsOmniview()
 	{
 		const hot = setupCover();
 		const feed = Cover.generateFeedServer();
-		const omniview = Reels.getOmniviewFromFeed(feed);
+		const omniviewElement = Reels.getEmbeddedOmniviewFromFeed(feed);
 		
 		const style: Hot.Style = {
 			textAlign: "center",
@@ -24,7 +30,7 @@ namespace Reels.Cover
 				{ backgroundColor: "orange", ...style },
 				hot.text("Second section."),
 			),
-			omniview
+			omniviewElement
 		);
 	}
 }

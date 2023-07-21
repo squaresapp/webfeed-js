@@ -12,18 +12,18 @@ namespace Reels
 		constructor(private readonly rawDocument: string) { }
 		
 		/** */
-		trapElement(elementFn: (element: Element) => Element | null)
+		trapElement(elementFn: (element: Element) => Element | void)
 		{
 			this.elementFn = elementFn;
 		}
-		private elementFn = (element: Element): Element | null => element;
+		private elementFn = (element: Element): Element | void => element;
 		
 		/** */
-		trapAttribute(attributeFn: (name: string, value: string, element: Element) => string | null)
+		trapAttribute(attributeFn: (name: string, value: string, element: Element) => string | void)
 		{
 			this.attributeFn = attributeFn;
 		}
-		private attributeFn = (name: string, value: string, element: Element): string | null => value;
+		private attributeFn = (name: string, value: string, element: Element): string | void => value;
 		
 		/** */
 		trapProperty(propertyFn: (name: string, value: string) => string)
@@ -51,7 +51,7 @@ namespace Reels
 				let element = node as Element;
 				
 				const result = this.elementFn(element);
-				if (result === null)
+				if (!result)
 				{
 					element.remove();
 					continue;
@@ -80,7 +80,7 @@ namespace Reels
 				for (const attr of Array.from(element.attributes))
 				{
 					const newValue = this.attributeFn(attr.name, attr.value, element);
-					if (newValue === null)
+					if (newValue === null || newValue === undefined)
 						element.removeAttributeNode(attr);
 					else
 						element.setAttribute(attr.name, newValue);

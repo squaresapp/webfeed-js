@@ -29,7 +29,7 @@ Effects like these only require a few lines of code. Check out the [effects docu
 The reels.js library has the ability to render an *Omniview*, which is a tiled view of previews of other posts in a feed-like format. The video below demonstrates this:
 
 <p align="center">
-	<img src="docs/Omniview.gif" alt="HTML Reels Example">
+	<img src="docs/Omniview.gif" alt="Omniview Example">
 </p>
 
 # How HTML Reels Compare with...
