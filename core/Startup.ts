@@ -34,5 +34,5 @@ namespace Syndi
 		}
 	}
 	
-	typeof module === "object" && Object.assign(module.exports, { Reels });
+	typeof module === "object" && Object.assign(module.exports, { Syndi });
 }

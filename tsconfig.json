@@ -22,8 +22,11 @@
 			"esnext.asynciterable"
 		]
 	},
+	"include": [
+		"core/**/*.ts"
+	],
 	"exclude": [
-		"**/+build/**/*.ts",
+		"+build/**/*.ts"
 	],
 	"references": [
 		{ "path": "../Hot" },
