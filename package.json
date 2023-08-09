@@ -1,32 +1,35 @@
 {
-	"name": "syndi",
+	"name": "feedblit",
 	"author": "Paul Gordon",
-	"description": "Utility library for working with HTML Reels",
-	"version": "1.0.5",
+	"description": "The reference implementation library for downloading and displaying HTML feeds in the browser.",
+	"version": "1.0.6",
 	"license": "MIT",
 	"repository": {
-		"url": "https://github.com/paul-go/HTMLReels"
+		"url": "https://github.com/HTMLFeeds/FeedBlit"
 	},
 	"bugs": {
-		"url": "https://github.com/paul-go/HTMLReels/issues"
+		"url": "https://github.com/HTMLFeeds/FeedBlit/issues"
 	},
-	"main": "syndi.js",
-	"types": "syndi.d.ts",
+	"main": "feedblit.js",
+	"types": "feedblit.d.ts",
 	"files": [
-		"syndi.js",
-		"syndi.min.js",
-		"syndi.effects.js",
-		"syndi.effects.min.js",
-		"syndi.d.ts",
-		"syndi.css",
+		"feedblit.js",
+		"feedblit.min.js",
+		"feedblit.effects.js",
+		"feedblit.effects.min.js",
+		"feedblit.d.ts",
+		"feedblit.css",
 		"package.json"
 	],
 	"scripts": {
 		"serve": "http-server -p 10101",
 		"test": "exit 0",
-		"emit-css": "node ./+build/syndi.debug.js --emit-css",
-		"bundle-effects": "tsc -p tsconfig.release.effects.json && terser ./+build/syndi.effects.js > ./+build/syndi.effects.min.js && npm run emit-css",
-		"bundle": "tsc -p tsconfig.release.json && terser ./+build/syndi.js > ./+build/syndi.min.js && npm run emit-css",
+		"emit-css": "node ./+build/feedblit.debug.js --emit-css",
+		"bundle-effects": "tsc -p tsconfig.release.effects.json && terser ./+build/feedblit.effects.js > ./+build/feedblit.effects.min.js && npm run emit-css",
+		"bundle": "tsc -p tsconfig.release.json && terser ./+build/feedblit.js > ./+build/feedblit.min.js && npm run emit-css",
 		"release": "npm run bundle && cd ./+build && cp ../package.json ./package.json && np"
+	},
+	"devDependencies": {
+		"@types/node": "^20.4.9"
 	}
 }

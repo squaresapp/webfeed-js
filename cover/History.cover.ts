@@ -1,5 +1,5 @@
 
-namespace Syndi.Cover
+namespace FeedBlit.Cover
 {
 	/** */
 	export async function coverHistory()

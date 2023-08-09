@@ -1,8 +1,11 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"outFile": "+build/syndi.js",
+		"outFile": "+build/feedblit.js",
 	},
+	"include": [
+		"**/core/**/*.ts"
+	],
 	"exclude": [
 		"**/+build/**/*.ts",
 		"**/*.cover.ts",

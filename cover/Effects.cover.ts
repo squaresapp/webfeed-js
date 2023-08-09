@@ -1,5 +1,5 @@
 
-namespace Syndi.Cover
+namespace FeedBlit.Cover
 {
 	/** */
 	export function coverReelSingle()
@@ -213,7 +213,7 @@ namespace Syndi.Cover
 	/** */
 	export function setupCover()
 	{
-		document.head.append(Syndi.getStandardCss());
+		document.head.append(FeedBlit.getStandardCss());
 		const hot = new Hot();
 		
 		hot.style(

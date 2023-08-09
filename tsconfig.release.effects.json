@@ -1,7 +1,7 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"outFile": "+build/syndi.effects.js",
+		"outFile": "+build/feedblit.effects.js",
 	},
 	"include": [
 		"Effects.ts"

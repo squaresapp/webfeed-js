@@ -1,5 +1,5 @@
 
-namespace Syndi
+namespace FeedBlit
 {
 	/**
 	 * Returns an array of remote <section> elements that exist underneath
@@ -31,16 +31,16 @@ namespace Syndi
 		container: ParentNode = document,
 		documentUrl = Url.getCurrent())
 	{
-		const remoteSections = Syndi.getRemoteSectionElements(container);
+		const remoteSections = FeedBlit.getRemoteSectionElements(container);
 		for (const remoteSection of remoteSections)
 		{
 			block:
 			{
-				const remoteUrl = Syndi.getRemoteSectionSource(remoteSection, documentUrl);
+				const remoteUrl = FeedBlit.getRemoteSectionSource(remoteSection, documentUrl);
 				if (!remoteUrl)
 					break block;
 				
-				const poster = await Syndi.getPosterFromUrl(remoteUrl);
+				const poster = await FeedBlit.getPosterFromUrl(remoteUrl);
 				if (!poster)
 					break block;
 				

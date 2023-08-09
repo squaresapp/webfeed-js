@@ -1,5 +1,5 @@
 
-namespace Syndi
+namespace FeedBlit
 {
 	/**
 	 * A library which operates over the browser-supplied history.pushState()

@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"outFile": "+build/syndi.debug.js",
+		"outFile": "+build/feedblit.debug.js",
 		"composite": true,
 		"module": "system",
 		"moduleResolution": "node",
@@ -23,14 +23,15 @@
 		]
 	},
 	"include": [
-		"core/**/*.ts"
+		"core/**/*.ts",
+		"cover/**/*.ts",
 	],
 	"exclude": [
 		"+build/**/*.ts"
 	],
 	"references": [
-		{ "path": "../Hot" },
-		{ "path": "../Hotdom" },
-		{ "path": "../Omniview" }
+		{ "path": "../Hot/tsconfig.json" },
+		{ "path": "../Hotdom/tsconfig.json" },
+		{ "path": "../Omniview/tsconfig.json" }
 	]
 }

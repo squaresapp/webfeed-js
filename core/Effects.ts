@@ -1,5 +1,5 @@
 
-namespace Syndi
+namespace FeedBlit
 {
 	/**
 	 * An enumeration that defines the CSS classes that are used

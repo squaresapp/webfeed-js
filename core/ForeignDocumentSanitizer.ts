@@ -1,5 +1,5 @@
 
-namespace Syndi
+namespace FeedBlit
 {
 	/**
 	 * A class that wraps a ForeignDocumentReader, and which converts

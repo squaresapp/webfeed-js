@@ -1,5 +1,5 @@
 
-namespace Syndi
+namespace FeedBlit
 {
 	/**
 	 * A class that reads a raw HTML document, and provides

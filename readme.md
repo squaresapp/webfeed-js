@@ -2,23 +2,21 @@
 	<img src="readme-poster.png" alt="HTML Reels Poster Image">
 </p>
 
-**Note**: This readme is out of date and needs to be updated to reflect the fact that this repository now contains a library for consuming HTML Syndications.
+**Note**: This readme is out of date and needs to be updated to reflect the fact that this repository now contains a library for consuming HTML Feeds.
 
-# HTML Reels
+# HTML Feeds
 
-HTML Reels is a series of base primitives for building scrollable cinematic hypermedia pages, as well as a means to construct lightweight feeds of said pages. The feed format is extremely simple and can be connected to a compatible reader app, which allow HTML Reels to be syndicated directly to a user's device. HTML Reels are a foundational idea that forms the basis of a realistic future social media paradigm where *we the users* own our content and the means of its distribution.
+HTML Feeds is a series of base primitives for building scrollable hypermedia pages, as well as a means to construct lightweight feeds of said pages. The feed format is extremely simple and can be connected to a compatible reader app, which allow HTML Feeds to be syndicated directly to a user's device. HTML Feeds are a foundational idea that forms the basis of a realistic future social media paradigm where *we the users* own our content and the means of its distribution.
 
-HTML Reels is a purely client-side solution. **No special server software is required**, such as nodes, relays, blockchains, miners, or any centralized service. The hypermedia pages, the feeds, and the distribution process requires nothing more than generic static web hosting. You can distribute from Netlify, Vercel, GitHub pages, Surge.sh, Cloudflare Pages, a plain S3 bucket, old-school web hosting, or even a laptop in your garage with a static IP.
+HTML Feeds are a purely client-side solution. **No special server software is required**, such as nodes, relays, blockchains, miners, or any centralized service. The hypermedia pages, the feeds, and the distribution process requires nothing more than generic static web hosting. You can distribute from Netlify, Vercel, GitHub pages, Surge.sh, Cloudflare Pages, a plain S3 bucket, old-school web hosting, or even a laptop in your garage with a static IP.
 
-HTML Reels introduce almost nothing in terms of new technology. **This is by-design**. It's literally just a subset of standard HTML, some CSS primitives that you can use to make cool stuff happen, and a `text/uri-list` file (the feed). **That's it**. If you can make HTML & CSS pages, you already know 99.9% of what is needed to make HTML Syndi.
+HTML Feeds introduce almost nothing in terms of new technology. **This is by-design**. It's literally just a subset of standard HTML, some CSS primitives that you can use to make cool stuff happen, and a `text/uri-list` file (the feed). **That's it**. If you can make HTML & CSS pages, you already know 99.9% of what is needed to make HTML Feeds.
 
-HTML Reels present a real opportunity to fix a broken internet. The atomic unit of online existence was intended to be your own website. Not some profile page on someone else's social platform. This is what HTML Reels intends to restore.
-
-**But you don't need to care about any social media reformation initiative to benefit from HTML reels.** At it's core, it's a low-effort framework that helps front-end developers build cinematic landing pages, and/or an entire blogs with cinematic posts.
+HTML Feeds present a real opportunity to fix a broken internet. The atomic unit of online existence was intended to be your own website. Not some profile page on someone else's social platform. This is what HTML Reels intends to restore.
 
 ## Example
 
-Below is a basic example of an HTML Reel being scrolled. You can see the source code behind this reel [here](samples/basic.html).
+Below is a basic example of an HTML Feed being scrolled. You can see the source code behind this reel [here](samples/basic.html).
 
 <p align="center">
 	<img src="readme.gif" alt="HTML Reels Example">
@@ -28,13 +26,13 @@ Effects like these only require a few lines of code. Check out the [effects docu
 
 ## Feed Display
 
-The reels.js library has the ability to render an *Omniview*, which is a tiled view of previews of other posts in a feed-like format. The video below demonstrates this:
+The feedblit.js library has the ability to render an *Omniview*, which is a tiled view of previews of other posts in a feed-like format. The video below demonstrates this:
 
 <p align="center">
 	<img src="docs/Omniview.gif" alt="Omniview Example">
 </p>
 
-# How HTML Reels Compare with...
+# How HTML Feeds Compare with...
 
 ## IndieWeb
 

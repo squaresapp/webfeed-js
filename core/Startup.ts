@@ -1,5 +1,5 @@
 
-namespace Syndi
+namespace FeedBlit
 {
 	/**
 	 * Main entry point for when the reals.js script is 
@@ -15,24 +15,25 @@ namespace Syndi
 	/** */
 	async function startup()
 	{
-		Syndi.resolveRemoteSections();
+		FeedBlit.resolveRemoteSections();
 		
-		let last = document.querySelector("BODY > SECTION:last-of-type")
+		let last = document.querySelector("BODY > SECTION:last-of-type")!;
 		if (!(last instanceof HTMLElement))
 			return;
 		
-		const feedInfos = Syndi.getFeedsFromDocument();
+		const feedInfos = FeedBlit.getFeedsFromDocument();
 		for (const feedInfo of feedInfos)
 		{
 			if (feedInfo.visible)
 			{
-				const { urls } = await Syndi.getFeedFromUrl(feedInfo.href);
-				const omniview = Syndi.getEmbeddedOmniviewFromFeed(urls);
+				const { urls } = await FeedBlit.getFeedFromUrl(feedInfo.href);
+				const omniview = FeedBlit.getEmbeddedOmniviewFromFeed(urls);
 				last.insertAdjacentElement("afterend", omniview);
 				last = omniview;
 			}
 		}
 	}
 	
-	typeof module === "object" && Object.assign(module.exports, { Syndi });
+	declare const module: any;
+	typeof module === "object" && Object.assign(module.exports, { FeedBlit });
 }

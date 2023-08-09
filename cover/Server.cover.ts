@@ -1,5 +1,5 @@
 
-namespace Syndi.Cover
+namespace FeedBlit.Cover
 {
 	/**
 	 * Launches an HTTP server on the next available

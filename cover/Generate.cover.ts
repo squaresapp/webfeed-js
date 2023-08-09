@@ -1,5 +1,5 @@
 
-namespace Syndi.Cover
+namespace FeedBlit.Cover
 {
 	/** */
 	export function generateFeedServer()
@@ -24,7 +24,7 @@ namespace Syndi.Cover
 		
 		const nodes: HTMLElement[] = [
 			hot.style(
-				hot.text(Syndi.getStandardCss().textContent || "")
+				hot.text(FeedBlit.getStandardCss().textContent || "")
 			),
 			hot.style(
 				"SECTION", {
