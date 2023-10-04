@@ -30,7 +30,7 @@ namespace FeedBlit
 		shadow.append(...head, ...body);
 		baseUrl = Url.folderOf(baseUrl);
 		const attrNames = ["href", "src", "action", "data-src"];
-		const sel = "LINK[href], A[href], IMG[src], FORM[action], SCRIPT[src]";
+		const sel = "LINK[href], A[href], IMG[src], FORM[action], SCRIPT[src], [style]";
 		
 		for (const element of getElements(sel, shadow))
 		{
@@ -40,10 +40,40 @@ namespace FeedBlit
 			
 			for (const attribute of attrs)
 				attribute.value = Url.resolve(attribute.value, baseUrl);
+			
+			for (const p of cssPropertiesWithUrls)
+			{
+				let pv = element.style.getPropertyValue(p);
+				if (pv === "")
+					continue;
+				
+				pv = pv.replace(/\burl\(".+?"\)/, substr =>
+				{
+					const unwrapUrl = substr.slice(5, -2);
+					const url = Url.resolve(unwrapUrl, baseUrl);
+					return `url("${url}")`;
+				});
+				
+				element.style.setProperty(p, pv);
+			}
 		}
 		
 		return container;
 	}
+	
+	const cssPropertiesWithUrls = [
+		"background",
+		"background-image",
+		"border-image",
+		"border-image-source",
+		"content",
+		"cursor",
+		"list-style-image",
+		"mask",
+		"mask-image",
+		"offset-path",
+		"src",
+	];
 	
 	/**
 	 * Reads an HTML Reel from the specified URL, and returns an
@@ -506,6 +536,7 @@ namespace FeedBlit
 		{
 			relativeUri;
 			debugger;
+			console.log(relativeUri);
 			return null;
 		}
 	}
