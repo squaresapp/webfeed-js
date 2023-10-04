@@ -29,12 +29,23 @@ namespace FeedBlit
 		
 		shadow.append(...head, ...body);
 		baseUrl = Url.folderOf(baseUrl);
-		const attrNames = ["href", "src", "action", "data-src"];
-		const sel = "LINK[href], A[href], IMG[src], FORM[action], SCRIPT[src], [style]";
+		convertEmbeddedUrlsToAbsolute(shadow, baseUrl);
+		return container;
+	}
+	
+	/**
+	 * 
+	 */
+	function convertEmbeddedUrlsToAbsolute(parent: ParentNode, baseUrl: string)
+	{
+		const elements = getElements(selectorForUrls, parent);
 		
-		for (const element of getElements(sel, shadow))
+		if (parent instanceof HTMLElement)
+			elements.unshift(parent);
+		
+		for (const element of elements)
 		{
-			const attrs = attrNames
+			const attrs = attrsWithUrls
 				.map(a => element.getAttributeNode(a))
 				.filter((a): a is Attr => !!a);
 			
@@ -57,10 +68,10 @@ namespace FeedBlit
 				element.style.setProperty(p, pv);
 			}
 		}
-		
-		return container;
 	}
 	
+	const attrsWithUrls = ["href", "src", "action", "data-src"];
+	const selectorForUrls = "LINK[href], A[href], IMG[src], FORM[action], SCRIPT[src], [style]";
 	const cssPropertiesWithUrls = [
 		"background",
 		"background-image",
@@ -81,6 +92,7 @@ namespace FeedBlit
 	 */
 	export async function getReelFromUrl(url: string)
 	{
+		const baseUrl = Url.folderOf(url);
 		const doc = await getDocumentFromUrl(url);
 		if (!doc)
 			return null;
@@ -90,6 +102,9 @@ namespace FeedBlit
 		const feedsUrls = feeds.map(f => f.href);
 		const head = getElements("LINK, STYLE", doc.head)
 			.filter(e => !feedsUrls.includes(e.getAttribute("href") || ""));
+		
+		for (const element of [...head, ...sections])
+			convertEmbeddedUrlsToAbsolute(element, baseUrl);
 		
 		return {
 			url,
