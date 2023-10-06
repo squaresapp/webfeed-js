@@ -549,9 +549,7 @@ namespace FeedBlit
 		}
 		catch (e)
 		{
-			relativeUri;
-			debugger;
-			console.log(relativeUri);
+			console.log("Error with request: " + relativeUri);
 			return null;
 		}
 	}
