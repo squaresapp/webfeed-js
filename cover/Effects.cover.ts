@@ -1,5 +1,5 @@
 
-namespace FeedBlit.Cover
+namespace HtmlFeed.Cover
 {
 	/** */
 	export function coverReelSingle()
@@ -213,7 +213,7 @@ namespace FeedBlit.Cover
 	/** */
 	export function setupCover()
 	{
-		document.head.append(FeedBlit.getStandardCss());
+		document.head.append(HtmlFeed.getStandardCss());
 		const hot = new Hot();
 		
 		hot.style(

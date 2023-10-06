@@ -1,5 +1,5 @@
 
-namespace FeedBlit
+namespace HtmlFeed
 {
 	/**
 	 * Returns an array of remote <section> elements that exist underneath
@@ -31,16 +31,16 @@ namespace FeedBlit
 		container: ParentNode = document,
 		documentUrl = Url.getCurrent())
 	{
-		const remoteSections = FeedBlit.getRemoteSectionElements(container);
+		const remoteSections = HtmlFeed.getRemoteSectionElements(container);
 		for (const remoteSection of remoteSections)
 		{
 			block:
 			{
-				const remoteUrl = FeedBlit.getRemoteSectionSource(remoteSection, documentUrl);
+				const remoteUrl = HtmlFeed.getRemoteSectionSource(remoteSection, documentUrl);
 				if (!remoteUrl)
 					break block;
 				
-				const poster = await FeedBlit.getPosterFromUrl(remoteUrl);
+				const poster = await HtmlFeed.getPosterFromUrl(remoteUrl);
 				if (!poster)
 					break block;
 				

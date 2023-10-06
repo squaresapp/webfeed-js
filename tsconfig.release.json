@@ -1,7 +1,7 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"outFile": "+build/feedblit.js",
+		"outFile": "+build/htmlfeed.js",
 	},
 	"include": [
 		"**/core/**/*.ts"

@@ -1,5 +1,5 @@
 
-namespace FeedBlit
+namespace HtmlFeed
 {
 	/**
 	 * A class that wraps a ForeignDocumentReader, and which converts

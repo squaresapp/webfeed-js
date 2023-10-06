@@ -1,5 +1,5 @@
 
-namespace FeedBlit
+namespace HtmlFeed
 {
 	/**
 	 * Returns an Omniview class that gets populated with the
@@ -22,19 +22,19 @@ namespace FeedBlit
 				
 				return new Promise(async resolve =>
 				{
-					const poster = await FeedBlit.getPosterFromUrl(urls[index]);
+					const poster = await HtmlFeed.getPosterFromUrl(urls[index]);
 					resolve(poster || getErrorPoster());
 				});
 			},
 			fillBody: async (fillElement, selectedElement, index) =>
 			{
 				const url = urls[index];
-				const reel = await FeedBlit.getReelFromUrl(url);
+				const reel = await HtmlFeed.getReelFromUrl(url);
 				if (!reel)
 					return selectedElement.append(getErrorPoster());
 				
 				fillElement.append(
-					FeedBlit.getSandboxedElement([...reel.head, ...reel.sections], reel.url)
+					HtmlFeed.getSandboxedElement([...reel.head, ...reel.sections], reel.url)
 				);
 			}
 		};

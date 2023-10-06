@@ -1,5 +1,5 @@
 
-namespace FeedBlit.Cover
+namespace HtmlFeed.Cover
 {
 	/** */
 	export function generateFeedServer()
@@ -24,7 +24,7 @@ namespace FeedBlit.Cover
 		
 		const nodes: HTMLElement[] = [
 			hot.style(
-				hot.text(FeedBlit.getStandardCss().textContent || "")
+				hot.text(HtmlFeed.getStandardCss().textContent || "")
 			),
 			hot.style(
 				"SECTION", {

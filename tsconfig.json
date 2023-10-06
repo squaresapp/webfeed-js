@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"outFile": "+build/feedblit.debug.js",
+		"outFile": "+build/htmlfeed.debug.js",
 		"composite": true,
 		"module": "system",
 		"moduleResolution": "node",

@@ -1,5 +1,5 @@
 
-namespace FeedBlit
+namespace HtmlFeed
 {
 	/**
 	 * Main entry point for when the reals.js script is 
@@ -15,19 +15,19 @@ namespace FeedBlit
 	/** */
 	async function startup()
 	{
-		FeedBlit.resolveRemoteSections();
+		HtmlFeed.resolveRemoteSections();
 		
 		let last = document.querySelector("BODY > SECTION:last-of-type")!;
 		if (!(last instanceof HTMLElement))
 			return;
 		
-		const feedInfos = FeedBlit.getFeedsFromDocument();
+		const feedInfos = HtmlFeed.getFeedsFromDocument();
 		for (const feedInfo of feedInfos)
 		{
 			if (feedInfo.visible)
 			{
-				const { urls } = await FeedBlit.getFeedFromUrl(feedInfo.href);
-				const omniview = FeedBlit.getEmbeddedOmniviewFromFeed(urls);
+				const { urls } = await HtmlFeed.getFeedFromUrl(feedInfo.href);
+				const omniview = HtmlFeed.getEmbeddedOmniviewFromFeed(urls);
 				last.insertAdjacentElement("afterend", omniview);
 				last = omniview;
 			}
@@ -35,5 +35,5 @@ namespace FeedBlit
 	}
 	
 	declare const module: any;
-	typeof module === "object" && Object.assign(module.exports, { FeedBlit });
+	typeof module === "object" && Object.assign(module.exports, { HtmlFeed });
 }

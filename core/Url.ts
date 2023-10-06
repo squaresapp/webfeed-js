@@ -1,5 +1,5 @@
 
-namespace FeedBlit
+namespace HtmlFeed
 {
 	/**
 	 * A namespace of functions that perform URL manipulation.

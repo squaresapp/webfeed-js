@@ -1,5 +1,5 @@
 
-namespace FeedBlit.Cover
+namespace HtmlFeed.Cover
 {
 	/** */
 	export async function coverHistory()

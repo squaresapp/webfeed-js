@@ -1,5 +1,5 @@
 
-namespace FeedBlit
+namespace HtmlFeed
 {
 	//# Reels
 	
@@ -12,7 +12,7 @@ namespace FeedBlit
 		baseUrl: string)
 	{
 		const container = document.createElement("div");
-		const head: HTMLElement[] = [FeedBlit.getStandardCss()];
+		const head: HTMLElement[] = [HtmlFeed.getStandardCss()];
 		const body: HTMLElement[] = [];
 		const shadow = container.attachShadow({ mode: "open" });
 		
@@ -116,7 +116,7 @@ namespace FeedBlit
 	}
 	
 	/**
-	 * Scans a document for <link> tags that refer to feeds of HTML FeedBlit.
+	 * Scans a document for <link> tags that refer to feeds of HTML HtmlFeed.
 	 */
 	export function getFeedsFromDocument(doc = document)
 	{
@@ -226,7 +226,7 @@ namespace FeedBlit
 		
 		for (let safety = 1000; safety-- > 0;)
 		{
-			const httpContent = await FeedBlit.getHttpContent(currentUrl);
+			const httpContent = await HtmlFeed.getHttpContent(currentUrl);
 			if (httpContent)
 			{
 				const htmlContent = httpContent.text;
@@ -284,7 +284,7 @@ namespace FeedBlit
 	{
 		const reel = await getReelFromUrl(reelUrl);
 		return reel?.sections.length ?
-			FeedBlit.getSandboxedElement([...reel.head, reel.sections[0]], reel.url) :
+			HtmlFeed.getSandboxedElement([...reel.head, reel.sections[0]], reel.url) :
 			null;
 	}
 	
@@ -297,12 +297,12 @@ namespace FeedBlit
 	 */
 	export async function * getPostersFromFeed(feedUrl: string)
 	{
-		const readResult = await FeedBlit.getFeedFromUrl(feedUrl);
+		const readResult = await HtmlFeed.getFeedFromUrl(feedUrl);
 		for (const url of readResult.urls)
 		{
-			const reel = await FeedBlit.getReelFromUrl(url);
+			const reel = await HtmlFeed.getReelFromUrl(url);
 			const poster = reel?.sections.length ?
-				FeedBlit.getSandboxedElement([...reel.head, reel.sections[0]], reel.url) :
+				HtmlFeed.getSandboxedElement([...reel.head, reel.sections[0]], reel.url) :
 				null;
 			
 			if (poster)

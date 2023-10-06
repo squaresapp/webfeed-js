@@ -1,5 +1,5 @@
 
-namespace FeedBlit.Cover
+namespace HtmlFeed.Cover
 {
 	/**
 	 * Launches an HTTP server on the next available

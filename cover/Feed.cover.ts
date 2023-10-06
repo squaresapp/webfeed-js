@@ -1,11 +1,11 @@
 
-namespace FeedBlit.Cover
+namespace HtmlFeed.Cover
 {
 	/** */
 	export async function coverReelsFeedMetadata()
 	{
 		debugger;
-		const metaData = await FeedBlit.getFeedMetaData("https://htmlreels.b-cdn.net/trees/index.txt");
+		const metaData = await HtmlFeed.getFeedMetaData("https://htmlreels.b-cdn.net/trees/index.txt");
 	}
 	
 	/** */
@@ -13,7 +13,7 @@ namespace FeedBlit.Cover
 	{
 		const hot = setupCover();
 		const feed = Cover.generateFeedServer();
-		const omniviewElement = FeedBlit.getEmbeddedOmniviewFromFeed(feed);
+		const omniviewElement = HtmlFeed.getEmbeddedOmniviewFromFeed(feed);
 		
 		const style: Hot.Style = {
 			textAlign: "center",

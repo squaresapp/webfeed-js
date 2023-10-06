@@ -1,7 +1,7 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"outFile": "+build/feedblit.effects.js",
+		"outFile": "+build/htmlfeed.effects.js",
 	},
 	"include": [
 		"Effects.ts"
