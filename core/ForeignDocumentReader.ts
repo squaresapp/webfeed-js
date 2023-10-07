@@ -37,6 +37,7 @@ namespace HtmlFeed
 		{
 			const parser = new DOMParser();
 			const doc = parser.parseFromString(this.rawDocument, "text/html");
+			const trash: Element[] = [];
 			
 			for (const walker = doc.createTreeWalker(doc);;)
 			{
@@ -53,7 +54,7 @@ namespace HtmlFeed
 				const result = this.elementFn(element);
 				if (!result)
 				{
-					element.remove();
+					trash.push(element);
 					continue;
 				}
 				else if (result instanceof Node && result !== element)
@@ -89,6 +90,9 @@ namespace HtmlFeed
 				if (element instanceof HTMLElement && element.hasAttribute("style"))
 					this.readStyle(element.style);
 			}
+			
+			for (const e of trash)
+				e.remove();
 			
 			return doc;
 		}

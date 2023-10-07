@@ -231,40 +231,36 @@ namespace HtmlFeed
 			{
 				const htmlContent = httpContent.text;
 				const reader = new ForeignDocumentReader(htmlContent);
-				let standardDescription = "";
-				let feedDescription = "";
-				let standardIcon = "";
-				let feedIcon = "";
+				
+				let author = "";
+				let description = "";
+				let icon = "";
 				
 				reader.trapElement(element =>
 				{
-					if (element.nodeName === "meta")
+					if (element.nodeName === "META")
 					{
-						const name = element.getAttribute("name");
+						const name = element.getAttribute("name")?.toLowerCase();
 						
-						if (name === "feed-description")
-							feedDescription = element.getAttribute("content") || "";
+						if (name === "description")
+							description = element.getAttribute("content") || "";
 						
-						else if (name === "description")
-							standardDescription = element.getAttribute("content") || "";
+						else if (name === "author")
+							author = element.getAttribute("content") || "";
 					}
-					else if (element.nodeName === "link")
+					else if (element.nodeName === "LINK")
 					{
-						const rel = element.getAttribute("rel");
+						const rel = element.getAttribute("rel")?.toLowerCase();
 						
-						if (rel === "feed-icon")
-							feedIcon = element.getAttribute("href") || "";
-						
-						else if (rel === "icon")
-							standardIcon = element.getAttribute("href") || "";
+						if (rel === "icon")
+							icon = element.getAttribute("href") || "";
 					}
 				});
 				
-				const description = feedDescription || standardDescription;
-				const icon = feedIcon || standardIcon;
+				reader.read();
 				
-				if (description || icon)
-					return { description, icon };
+				if (author || description || icon)
+					return { author, description, icon };
 			}
 		
 			const url = new URL("..", currentUrl);
