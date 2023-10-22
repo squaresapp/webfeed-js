@@ -220,7 +220,7 @@ namespace HtmlFeed
 	 * starting at it's base directory, and scanning upwards until the root
 	 * domain is reached.
 	 */
-	export async function getFeedMetaData(feedUrl: string)
+	export async function getFeedMetaData(feedUrl: string): Promise<IFeedMetaData | null>
 	{
 		let currentUrl = Url.folderOf(feedUrl);
 		
@@ -271,6 +271,14 @@ namespace HtmlFeed
 		}
 		
 		return null;
+	}
+	
+	/** */
+	export interface IFeedMetaData
+	{
+		readonly author: string;
+		readonly description: string;
+		readonly icon: string;
 	}
 	
 	/**
