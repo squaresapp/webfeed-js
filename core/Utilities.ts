@@ -1,7 +1,7 @@
 
 namespace HtmlFeed
 {
-	//# Reels
+	//# Pages
 	
 	/**
 	 * Organizes the specified element or elements into the
@@ -87,10 +87,10 @@ namespace HtmlFeed
 	];
 	
 	/**
-	 * Reads an HTML Reel from the specified URL, and returns an
+	 * Reads an HTML page from the specified URL, and returns an
 	 * object that contains the relevant content.
 	 */
-	export async function getReelFromUrl(url: string)
+	export async function getPageFromUrl(url: string)
 	{
 		const baseUrl = Url.folderOf(url);
 		const doc = await getDocumentFromUrl(url);
@@ -140,7 +140,7 @@ namespace HtmlFeed
 	}
 	
 	/**
-	 * Stores the information about a feed defined by a <link> tag in a Reel.
+	 * Stores the information about a feed defined by a <link> tag in a page.
 	 */
 	export interface IFeedInfo
 	{
@@ -182,36 +182,45 @@ namespace HtmlFeed
 	 * URL. The function accepts a startingByte argument to allow for
 	 * partial downloads containing only the new content in the feed.
 	 */
-	export async function getFeedFromUrl(feedUrl: string, startingByte = 0)
+	export async function getFeedUrls(feedUrl: string)
 	{
 		const urls: string[] = [];
-		const fetchResult = await getHttpContent(feedUrl, startingByte);
-		let bytesRead = -1;
+		const fetchResult = await getHttpContent(feedUrl);
 		
-		if (fetchResult)
+		if (!fetchResult)
+			return null;
+		
+		let bytesRead = -1;
+		const type = (fetchResult.headers.get("Content-Type") || "").split(";")[0];
+		if (type !== "text/plain")
 		{
-			const type = (fetchResult.headers.get("Content-Type") || "").split(";")[0];
-			if (type !== "text/plain")
-			{
-				console.error(
-					"Feed at URL: " + feedUrl + "was returned with an incorrect " +
-					"mime type. Expected mime type is \"text/plain\", but the mime type \"" + 
-					type + "\" was returned.");
-			}
-			else
-			{
-				urls.push(...fetchResult.text
-					.split("\n")
-					.map(s => s.trim())
-					.filter(s => !!s)
-					.filter(s => !s.startsWith("#"))
-					.map(s => Url.resolve(s, Url.folderOf(feedUrl))));
-				
-				bytesRead = fetchResult.text.length || 0;
-			}
+			console.error(
+				"Feed at URL: " + feedUrl + "was returned with an incorrect " +
+				"mime type. Expected mime type is \"text/plain\", but the mime type \"" + 
+				type + "\" was returned.");
+			
+			return null;
+		}
+		else
+		{
+			urls.push(...fetchResult.text
+				.split("\n")
+				.map(s => s.trim())
+				.filter(s => !!s)
+				.filter(s => !s.startsWith("#"))
+				.map(s => Url.resolve(s, Url.folderOf(feedUrl))));
+			
+			bytesRead = fetchResult.text.length || 0;
 		}
 		
-		return { urls, bytesRead };
+		return urls;
+	}
+	
+	/** */
+	export interface IFeedContents
+	{
+		readonly urls: string[];
+		readonly bytesRead: number;
 	}
 	
 	/**
@@ -260,7 +269,7 @@ namespace HtmlFeed
 				reader.read();
 				
 				if (author || description || icon)
-					return { author, description, icon };
+					return { url: feedUrl, author, description, icon };
 			}
 		
 			const url = new URL("..", currentUrl);
@@ -276,19 +285,20 @@ namespace HtmlFeed
 	/** */
 	export interface IFeedMetaData
 	{
+		readonly url: string;
 		readonly author: string;
 		readonly description: string;
 		readonly icon: string;
 	}
 	
 	/**
-	 * Reads the poster <section> stored in the Reel at the specified URL.
+	 * Reads the poster <section> stored in the page at the specified URL.
 	 */
-	export async function getPosterFromUrl(reelUrl: string)
+	export async function getPosterFromUrl(pageUrl: string)
 	{
-		const reel = await getReelFromUrl(reelUrl);
-		return reel?.sections.length ?
-			HtmlFeed.getSandboxedElement([...reel.head, reel.sections[0]], reel.url) :
+		const page = await getPageFromUrl(pageUrl);
+		return page?.sections.length ?
+			HtmlFeed.getSandboxedElement([...page.head, page.sections[0]], page.url) :
 			null;
 	}
 	
@@ -296,17 +306,20 @@ namespace HtmlFeed
 	 * Reads posters from a feed text file located at the specified URL.
 	 * 
 	 * @returns An async generator function that iterates through
-	 * every reel specified in the specified feed URL, and returns
-	 * the poster associated with each reel.
+	 * every page specified in the specified feed URL, and returns
+	 * the poster associated with each page.
 	 */
 	export async function * getPostersFromFeed(feedUrl: string)
 	{
-		const readResult = await HtmlFeed.getFeedFromUrl(feedUrl);
-		for (const url of readResult.urls)
+		const urls = await HtmlFeed.getFeedUrls(feedUrl);
+		if (!urls)
+			return;
+		
+		for (const url of urls)
 		{
-			const reel = await HtmlFeed.getReelFromUrl(url);
-			const poster = reel?.sections.length ?
-				HtmlFeed.getSandboxedElement([...reel.head, reel.sections[0]], reel.url) :
+			const page = await HtmlFeed.getPageFromUrl(url);
+			const poster = page?.sections.length ?
+				HtmlFeed.getSandboxedElement([...page.head, page.sections[0]], page.url) :
 				null;
 			
 			if (poster)
@@ -410,7 +423,7 @@ namespace HtmlFeed
 		s.width = "fit-content";
 		s.height = "fit-content";
 		s.margin = "auto";
-		s.fontSize = "10vw";
+		s.fontSize = "20vw";
 		s.fontWeight = "900";
 		div.append(new Text("✕"));
 		return div;
@@ -422,7 +435,7 @@ namespace HtmlFeed
 	 * Makes an HTTP request to the specified URI and returns
 	 * the headers and a string containing the body.
 	 */
-	export async function getHttpContent(relativeUri: string, startingByte = 0)
+	export async function getHttpContent(relativeUri: string)
 	{
 		relativeUri = Url.resolve(relativeUri, Url.getCurrent());
 		
@@ -432,9 +445,6 @@ namespace HtmlFeed
 				"pragma": "no-cache",
 				"cache-control": "no-cache",
 			};
-			
-			if (startingByte > 0)
-				headers.range = "bytes=" + startingByte + "-";
 			
 			const fetchResult = await window.fetch(relativeUri, {
 				method: "GET",

@@ -24,13 +24,16 @@ namespace HtmlFeed
 		const feedInfos = HtmlFeed.getFeedsFromDocument();
 		for (const feedInfo of feedInfos)
 		{
-			if (feedInfo.visible)
-			{
-				const { urls } = await HtmlFeed.getFeedFromUrl(feedInfo.href);
-				const omniview = HtmlFeed.getEmbeddedOmniviewFromFeed(urls);
-				last.insertAdjacentElement("afterend", omniview);
-				last = omniview;
-			}
+			if (!feedInfo.visible)
+				continue;
+			
+			const urls = await HtmlFeed.getFeedUrls(feedInfo.href);
+			if (!urls)
+				continue;
+			
+			const omniview = HtmlFeed.getEmbeddedOmniviewFromFeed(urls);
+			last.insertAdjacentElement("afterend", omniview);
+			last = omniview;
 		}
 	}
 	

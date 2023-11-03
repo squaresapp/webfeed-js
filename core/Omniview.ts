@@ -29,7 +29,7 @@ namespace HtmlFeed
 			fillBody: async (fillElement, selectedElement, index) =>
 			{
 				const url = urls[index];
-				const reel = await HtmlFeed.getReelFromUrl(url);
+				const reel = await HtmlFeed.getPageFromUrl(url);
 				if (!reel)
 					return selectedElement.append(getErrorPoster());
 				
