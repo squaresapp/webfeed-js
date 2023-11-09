@@ -1,17 +1,17 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"outFile": "+build/htmlfeed.js",
+		"outFile": "+build/htmlfeed.js"
 	},
 	"include": [
 		"**/core/**/*.ts"
 	],
 	"exclude": [
 		"**/+build/**/*.ts",
-		"**/*.cover.ts",
+		"**/*.cover.ts"
 	],
 	"references": [
 		{ "path": "../Hot" },
-		{ "path": "../Omniview" },
+		{ "path": "../Omniview" }
 	]
 }
