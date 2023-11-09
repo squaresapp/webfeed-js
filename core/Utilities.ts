@@ -229,21 +229,22 @@ namespace HtmlFeed
 	 * starting at it's base directory, and scanning upwards until the root
 	 * domain is reached.
 	 */
-	export async function getFeedMetaData(feedUrl: string): Promise<IFeedMetaData | null>
+	export async function getFeedMetaData(feedUrl: string): Promise<IFeedMetaData>
 	{
 		let currentUrl = Url.folderOf(feedUrl);
 		
+		let author = "";
+		let description = "";
+		let icon = "";
+		
 		for (let safety = 1000; safety-- > 0;)
 		{
-			const httpContent = await HtmlFeed.getHttpContent(currentUrl);
+			const httpContent = await HtmlFeed.getHttpContent(currentUrl, "quiet");
 			if (httpContent)
 			{
 				const htmlContent = httpContent.text;
 				const reader = new ForeignDocumentReader(htmlContent);
 				
-				let author = "";
-				let description = "";
-				let icon = "";
 				
 				reader.trapElement(element =>
 				{
@@ -269,7 +270,7 @@ namespace HtmlFeed
 				reader.read();
 				
 				if (author || description || icon)
-					return { url: feedUrl, author, description, icon };
+					break;
 			}
 		
 			const url = new URL("..", currentUrl);
@@ -279,7 +280,7 @@ namespace HtmlFeed
 			currentUrl = url.toString();
 		}
 		
-		return null;
+		return { url: feedUrl, author, description, icon };
 	}
 	
 	/** */
@@ -294,7 +295,7 @@ namespace HtmlFeed
 	/**
 	 * Reads the poster <section> stored in the page at the specified URL.
 	 */
-	export async function getPosterFromUrl(pageUrl: string)
+	export async function getPosterFromUrl(pageUrl: string): Promise<HTMLElement | null>
 	{
 		const page = await getPageFromUrl(pageUrl);
 		return page?.sections.length ?
@@ -435,20 +436,21 @@ namespace HtmlFeed
 	 * Makes an HTTP request to the specified URI and returns
 	 * the headers and a string containing the body.
 	 */
-	export async function getHttpContent(relativeUri: string)
+	export async function getHttpContent(relativeUri: string, quiet?: "quiet")
 	{
 		relativeUri = Url.resolve(relativeUri, Url.getCurrent());
 		
 		try
 		{
 			const headers: HeadersInit = {
-				"pragma": "no-cache",
-				"cache-control": "no-cache",
+				//"pragma": "no-cache",
+				//"cache-control": "no-cache",
 			};
 			
 			const fetchResult = await window.fetch(relativeUri, {
 				method: "GET",
 				headers,
+				mode: "cors",
 			});
 			
 			if (!fetchResult.ok)
@@ -465,7 +467,9 @@ namespace HtmlFeed
 			}
 			catch (e)
 			{
-				console.error("Fetch failed: " + relativeUri);
+				if (!quiet)
+					console.error("Fetch failed: " + relativeUri);
+				
 				return null;
 			}
 			
@@ -476,7 +480,9 @@ namespace HtmlFeed
 		}
 		catch (e)
 		{
-			console.log("Error with request: " + relativeUri);
+			if (!quiet)
+				console.log("Error with request: " + relativeUri);
+			
 			return null;
 		}
 	}
