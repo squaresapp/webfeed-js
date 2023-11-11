@@ -4,7 +4,6 @@ namespace HtmlFeed.Cover
 	/** */
 	export async function coverReelsFeedMetadata()
 	{
-		debugger;
 		const metaData = await HtmlFeed.getFeedMetaData("https://htmlreels.b-cdn.net/trees/index.txt");
 	}
 	
