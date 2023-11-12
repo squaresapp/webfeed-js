@@ -10,11 +10,11 @@ namespace HtmlFeed.Cover
 	/** */
 	export function coverReelsOmniview()
 	{
-		const hot = setupCover();
+		const raw = setupCover();
 		const feed = Cover.generateFeedServer();
 		const omniviewElement = HtmlFeed.getEmbeddedOmniviewFromFeed(feed);
 		
-		const style: Hot.Style = {
+		const style: Raw.Style = {
 			textAlign: "center",
 			fontSize: "10vw",
 			fontWeight: 900,
@@ -22,13 +22,13 @@ namespace HtmlFeed.Cover
 		};
 		
 		document.body.append(
-			hot.section(
+			raw.section(
 				{ backgroundColor: "crimson", ...style },
-				hot.text("Poster"),
+				raw.text("Poster"),
 			),
-			hot.section(
+			raw.section(
 				{ backgroundColor: "orange", ...style },
-				hot.text("Second section."),
+				raw.text("Second section."),
 			),
 			omniviewElement
 		);

@@ -31,7 +31,7 @@ namespace HtmlFeed
 				
 				if (t === "noscript")
 				{
-					return Hot.div(
+					return Raw.div(
 						Array.from(e.attributes),
 						Array.from(e.children),
 					);

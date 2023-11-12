@@ -12,7 +12,7 @@ namespace HtmlFeed
 		if (typeof Omniview === "undefined")
 			throw new Error("Omniview library not found.");
 		
-		const hot = new Hot();
+		const raw = new Raw();
 		
 		const defaultOptions: IOmniviewOptions = {
 			getPoster: index =>
@@ -42,8 +42,8 @@ namespace HtmlFeed
 		const mergedOptions = Object.assign(omniviewOptions, defaultOptions);
 		const omniview = new Omniview.Class(mergedOptions);
 		
-		hot.get(omniview)(
-			hot.on("connected", () => omniview.gotoPosters())
+		raw.get(omniview)(
+			raw.on("connected", () => omniview.gotoPosters())
 		);
 		
 		return omniview;

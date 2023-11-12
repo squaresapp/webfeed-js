@@ -11,7 +11,7 @@
 		"**/*.cover.ts"
 	],
 	"references": [
-		{ "path": "../Hot" },
+		{ "path": "../Raw" },
 		{ "path": "../Omniview" }
 	]
 }

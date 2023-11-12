@@ -341,10 +341,10 @@ namespace HtmlFeed
 		if (typeof Omniview === "undefined")
 			throw new Error("Omniview library not found.");
 		
-		const hot = new Hot();
+		const raw = new Raw();
 		const omniview = getOmniviewFromFeed(urls, omniviewOptions) as Omniview.Class;
 		
-		const out = hot.div(
+		const out = raw.div(
 			"omniview-container",
 			{
 				position: "relative",
@@ -356,10 +356,10 @@ namespace HtmlFeed
 			// default for an omniview. The omniview's default fixed
 			// setting does seem a bit broken. Further investigation
 			// is needed to determine if this is appropriate.
-			hot.get(omniview)({ position: "relative" }),
+			raw.get(omniview)({ position: "relative" }),
 			// Places an extra div at the bottom of the posters list
 			// so that scroll-snapping works better.
-			hot.div(
+			raw.div(
 				{
 					position: "absolute",
 					left: 0,

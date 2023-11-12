@@ -4,16 +4,16 @@ namespace HtmlFeed.Cover
 	/** */
 	export async function coverHistory()
 	{
-		const hot = new Hot();
+		const raw = new Raw();
 		History.triggerProgrammaticEvents = true;
 		
 		// The browser surface needs to be interacted with,
 		// otherwise, popstate events will not fire.
 		await new Promise<void>(resolve =>
 		{
-			document.body.append(hot.button(
+			document.body.append(raw.button(
 				new Text("Begin"),
-				hot.on("click", () => resolve())
+				raw.on("click", () => resolve())
 			));
 		});
 		

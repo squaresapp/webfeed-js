@@ -30,8 +30,8 @@
 		"+build/**/*.ts"
 	],
 	"references": [
-		{ "path": "../Hot/tsconfig.json" },
-		{ "path": "../Hotdom/tsconfig.json" },
+		{ "path": "../Raw/tsconfig.json" },
+		{ "path": "../Rawdom/tsconfig.json" },
 		{ "path": "../Omniview/tsconfig.json" }
 	]
 }

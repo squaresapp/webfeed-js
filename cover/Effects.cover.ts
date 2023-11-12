@@ -4,9 +4,9 @@ namespace HtmlFeed.Cover
 	/** */
 	export function coverReelSingle()
 	{
-		const hot = setupCover();
+		const raw = setupCover();
 		
-		hot.style(
+		raw.style(
 			"*", {
 				fontFamily: "Inter, -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif",
 			},
@@ -43,10 +43,10 @@ namespace HtmlFeed.Cover
 		).attach();
 		
 		document.body.append(
-			hot.section(
+			raw.section(
 				
 			),
-			hot.section(
+			raw.section(
 				"a@-1..-0.9",
 				"b@-0.9..-0.8",
 				"c@0.1",
@@ -54,16 +54,16 @@ namespace HtmlFeed.Cover
 				"e@",
 				"f@..",
 			),
-			hot.section(
+			raw.section(
 				StandardClasses.fixed
 			),
-			hot.section(
-				hot.div("opacity")
+			raw.section(
+				raw.div("opacity")
 			),
-			hot.section(
-				hot.div("move")
+			raw.section(
+				raw.div("move")
 			),
-			hot.section(
+			raw.section(
 				
 			),
 		);
@@ -72,10 +72,10 @@ namespace HtmlFeed.Cover
 	/** */
 	export function coverReelProgressFunctions()
 	{
-		const hot = setupCover();
+		const raw = setupCover();
 		
 		document.body.append(
-			hot.style(
+			raw.style(
 				"DIV", {
 					position: "relative",
 					border: "10px solid blue",
@@ -86,23 +86,23 @@ namespace HtmlFeed.Cover
 					fontWeight: 900,
 				}
 			),
-			hot.section(
+			raw.section(
 				{
 					backgroundColor: "crimson",
 				}
 			),
-			hot.section(
+			raw.section(
 				{
 					backgroundColor: "black",
 				},
-				hot.div(new Text("100"), { left: "calc(var(--100) * 100px)" }),
-				hot.div(new Text("010"), { left: "calc(var(--010) * 100px)" }),
-				hot.div(new Text("001"), { left: "calc(var(--001) * 100px)" }),
-				hot.div(new Text("110"), { left: "calc(var(--110) * 100px)" }),
-				hot.div(new Text("011"), { left: "calc(var(--011) * 100px)" }),
-				hot.div(new Text("101"), { left: "calc(var(--101) * 100px)" }),
+				raw.div(new Text("100"), { left: "calc(var(--100) * 100px)" }),
+				raw.div(new Text("010"), { left: "calc(var(--010) * 100px)" }),
+				raw.div(new Text("001"), { left: "calc(var(--001) * 100px)" }),
+				raw.div(new Text("110"), { left: "calc(var(--110) * 100px)" }),
+				raw.div(new Text("011"), { left: "calc(var(--011) * 100px)" }),
+				raw.div(new Text("101"), { left: "calc(var(--101) * 100px)" }),
 			),
-			hot.section(
+			raw.section(
 				{
 					backgroundColor: "orange"
 				}
@@ -113,21 +113,21 @@ namespace HtmlFeed.Cover
 	/** */
 	export function coverReelFadeInOut()
 	{
-		const hot = setupCover();
+		const raw = setupCover();
 		
 		document.body.append(
-			hot.section(
+			raw.section(
 				
 			),
-			hot.section(
-				hot.h1(
+			raw.section(
+				raw.h1(
 					{
 						opacity: "calc((var(--010) * 3) - 2)"
 					},
 					new Text("Fade In Fade Out")
 				)
 			),
-			hot.section(
+			raw.section(
 				
 			),
 		);
@@ -136,21 +136,21 @@ namespace HtmlFeed.Cover
 	/** */
 	export function coverReelMoveAcross()
 	{
-		const hot = setupCover();
+		const raw = setupCover();
 		
 		document.body.append(
-			hot.section(
+			raw.section(
 				
 			),
-			hot.section(
-				hot.h1(
+			raw.section(
+				raw.h1(
 					{
 						transform: "translateX(calc(var(--inc) * 150vw))",
 					},
 					new Text("Movin'")
 				)
 			),
-			hot.section(
+			raw.section(
 				
 			),
 		);
@@ -159,15 +159,15 @@ namespace HtmlFeed.Cover
 	/** */
 	export function coverReelFixed()
 	{
-		const hot = setupCover();
+		const raw = setupCover();
 		
 		document.body.append(
-			hot.section(
+			raw.section(
 				
 			),
-			hot.section(
+			raw.section(
 				StandardClasses.fixed,
-				hot.h1(
+				raw.h1(
 					{
 						filter: "blur(calc(var(--101) * 100px))",
 						opacity: "calc((var(--010) * 3) - 2)",
@@ -175,7 +175,7 @@ namespace HtmlFeed.Cover
 					new Text("Solid.")
 				)
 			),
-			hot.section(
+			raw.section(
 				
 			),
 		);
@@ -184,17 +184,17 @@ namespace HtmlFeed.Cover
 	/** */
 	export function coverReelRanges()
 	{
-		const hot = setupCover();
+		const raw = setupCover();
 		
 		document.body.append(
-			hot.style(
+			raw.style(
 				".s1[if~='0.1,1'], .s1[if~='1,1']", {
 					color: "red"
 				}
 			),
-			hot.section(
+			raw.section(
 				"s1",
-				hot.div(
+				raw.div(
 					{
 						position: "absolute",
 						bottom: 0,
@@ -202,7 +202,7 @@ namespace HtmlFeed.Cover
 					new Text("Becomes red")
 				)
 			),
-			hot.section(
+			raw.section(
 				{
 					backgroundColor: "crimson"
 				}
@@ -214,9 +214,9 @@ namespace HtmlFeed.Cover
 	export function setupCover()
 	{
 		document.head.append(HtmlFeed.getStandardCss());
-		const hot = new Hot();
+		const raw = new Raw();
 		
-		hot.style(
+		raw.style(
 			"HTML", {
 				backgroundColor: "black",
 				color: "white",
@@ -244,6 +244,6 @@ namespace HtmlFeed.Cover
 			},
 		).attach();
 		
-		return hot;
+		return raw;
 	}
 }
