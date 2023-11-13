@@ -1,7 +1,7 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"outFile": "+build/htmlfeed.js"
+		"outFile": "+build/libfeed.js"
 	},
 	"include": [
 		"**/core/**/*.ts"

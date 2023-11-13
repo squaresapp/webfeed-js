@@ -1,9 +1,0 @@
-{
-	"extends": "./tsconfig.json",
-	"compilerOptions": {
-		"outFile": "+build/htmlfeed.effects.js"
-	},
-	"include": [
-		"Effects.ts"
-	]
-}

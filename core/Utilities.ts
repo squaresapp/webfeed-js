@@ -1,5 +1,5 @@
 
-namespace HtmlFeed
+namespace Libfeed
 {
 	//# Pages
 	
@@ -12,7 +12,7 @@ namespace HtmlFeed
 		baseUrl: string)
 	{
 		const container = document.createElement("div");
-		const head: HTMLElement[] = [HtmlFeed.getStandardCss()];
+		const head: HTMLElement[] = [Libfeed.getStandardCss()];
 		const body: HTMLElement[] = [];
 		const shadow = container.attachShadow({ mode: "open" });
 		
@@ -116,7 +116,8 @@ namespace HtmlFeed
 	}
 	
 	/**
-	 * Scans a document for <link> tags that refer to feeds of HTML HtmlFeed.
+	 * Scans a document for <link> tags that refer to the feeds defined
+	 * within the specified document.
 	 */
 	export function getFeedsFromDocument(doc = document)
 	{
@@ -190,7 +191,7 @@ namespace HtmlFeed
 				if (action === "")
 					return;
 				
-				const content = await HtmlFeed.getHttpContent(action, {
+				const content = await Libfeed.getHttpContent(action, {
 					method: form.method,
 					quiet: true,
 				});
@@ -329,7 +330,7 @@ namespace HtmlFeed
 		
 		for (let safety = 1000; safety-- > 0;)
 		{
-			const httpContent = await HtmlFeed.getHttpContent(currentUrl, { quiet: true });
+			const httpContent = await Libfeed.getHttpContent(currentUrl, { quiet: true });
 			if (httpContent)
 			{
 				const htmlContent = httpContent.text;
@@ -388,7 +389,7 @@ namespace HtmlFeed
 	{
 		const page = await getPageFromUrl(pageUrl);
 		return page?.sections.length ?
-			HtmlFeed.getSandboxedElement([...page.head, page.sections[0]], page.url) :
+			Libfeed.getSandboxedElement([...page.head, page.sections[0]], page.url) :
 			null;
 	}
 	
@@ -401,15 +402,15 @@ namespace HtmlFeed
 	 */
 	export async function * getPostersFromFeed(feedUrl: string)
 	{
-		const urls = await HtmlFeed.getFeedUrls(feedUrl);
+		const urls = await Libfeed.getFeedUrls(feedUrl);
 		if (!urls)
 			return;
 		
 		for (const url of urls)
 		{
-			const page = await HtmlFeed.getPageFromUrl(url);
+			const page = await Libfeed.getPageFromUrl(url);
 			const poster = page?.sections.length ?
-				HtmlFeed.getSandboxedElement([...page.head, page.sections[0]], page.url) :
+				Libfeed.getSandboxedElement([...page.head, page.sections[0]], page.url) :
 				null;
 			
 			if (poster)

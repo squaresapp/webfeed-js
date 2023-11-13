@@ -1,5 +1,5 @@
 
-namespace HtmlFeed.Cover
+namespace Libfeed.Cover
 {
 	/** */
 	export function generateFeedServer()
@@ -24,7 +24,7 @@ namespace HtmlFeed.Cover
 		
 		const nodes: HTMLElement[] = [
 			raw.style(
-				raw.text(HtmlFeed.getStandardCss().textContent || "")
+				raw.text(Libfeed.getStandardCss().textContent || "")
 			),
 			raw.style(
 				"SECTION", {

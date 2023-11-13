@@ -1,5 +1,5 @@
 
-namespace HtmlFeed
+namespace Libfeed
 {
 	/**
 	 * A class that wraps a ForeignDocumentReader, and which converts

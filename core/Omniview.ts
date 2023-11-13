@@ -1,5 +1,5 @@
 
-namespace HtmlFeed
+namespace Libfeed
 {
 	/**
 	 * Returns an Omniview class that gets populated with the
@@ -22,19 +22,19 @@ namespace HtmlFeed
 				
 				return new Promise(async resolve =>
 				{
-					const poster = await HtmlFeed.getPosterFromUrl(urls[index]);
+					const poster = await Libfeed.getPosterFromUrl(urls[index]);
 					resolve(poster || getErrorPoster());
 				});
 			},
 			fillBody: async (fillElement, selectedElement, index) =>
 			{
 				const url = urls[index];
-				const reel = await HtmlFeed.getPageFromUrl(url);
+				const reel = await Libfeed.getPageFromUrl(url);
 				if (!reel)
 					return selectedElement.append(getErrorPoster());
 				
 				fillElement.append(
-					HtmlFeed.getSandboxedElement([...reel.head, ...reel.sections], reel.url)
+					Libfeed.getSandboxedElement([...reel.head, ...reel.sections], reel.url)
 				);
 			}
 		};

@@ -1,10 +1,10 @@
 
-namespace HtmlFeed.Cover
+namespace Libfeed.Cover
 {
 	/** */
 	export function setupCover()
 	{
-		document.head.append(HtmlFeed.getStandardCss());
+		document.head.append(Libfeed.getStandardCss());
 		const raw = new Raw();
 		
 		raw.style(

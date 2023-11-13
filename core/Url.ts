@@ -1,5 +1,5 @@
 
-namespace HtmlFeed
+namespace Libfeed
 {
 	/**
 	 * A namespace of functions that perform URL manipulation.

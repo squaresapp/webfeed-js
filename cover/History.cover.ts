@@ -1,5 +1,5 @@
 
-namespace HtmlFeed.Cover
+namespace Libfeed.Cover
 {
 	/** */
 	export async function coverHistory()

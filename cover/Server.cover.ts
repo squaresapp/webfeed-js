@@ -1,5 +1,5 @@
 
-namespace HtmlFeed.Cover
+namespace Libfeed.Cover
 {
 	/**
 	 * Launches an HTTP server on the next available

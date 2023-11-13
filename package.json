@@ -1,32 +1,31 @@
 {
-	"name": "htmlfeed",
+	"name": "libfeed",
 	"author": "Paul Gordon",
 	"description": "The reference implementation library for downloading and displaying HTML feeds in the browser.",
 	"version": "1.0.6",
 	"license": "MIT",
 	"repository": {
-		"url": "https://github.com/HTMLFeeds/HTMLFeedJs"
+		"url": "https://github.com/scrollapp/libfeed"
 	},
 	"bugs": {
-		"url": "https://github.com/HTMLFeeds/HTMLFeedJs/issues"
+		"url": "https://github.com/scrollapp/libfeed/issues"
 	},
-	"main": "htmlfeed.js",
-	"types": "htmlfeed.d.ts",
+	"main": "libfeed.js",
+	"types": "libfeed.d.ts",
 	"files": [
-		"htmlfeed.js",
-		"htmlfeed.min.js",
-		"htmlfeed.effects.js",
-		"htmlfeed.effects.min.js",
-		"htmlfeed.d.ts",
-		"htmlfeed.css",
+		"libfeed.js",
+		"libfeed.min.js",
+		"libfeed.effects.js",
+		"libfeed.effects.min.js",
+		"libfeed.d.ts",
+		"libfeed.css",
 		"package.json"
 	],
 	"scripts": {
 		"serve": "http-server -p 10101",
 		"test": "exit 0",
-		"emit-css": "node ./+build/htmlfeed.debug.js --emit-css",
-		"bundle-effects": "tsc -p tsconfig.release.effects.json && terser ./+build/htmlfeed.effects.js > ./+build/htmlfeed.effects.min.js && npm run emit-css",
-		"bundle": "tsc -p tsconfig.release.json && terser ./+build/htmlfeed.js > ./+build/htmlfeed.min.js && npm run emit-css",
+		"emit-css": "node ./+build/libfeed.debug.js --emit-css",
+		"bundle": "tsc -p tsconfig.release.json && terser ./+build/libfeed.js > ./+build/libfeed.min.js && npm run emit-css",
 		"release": "npm run bundle && cd ./+build && cp ../package.json ./package.json && np"
 	},
 	"devDependencies": {
