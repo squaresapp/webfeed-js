@@ -5,18 +5,17 @@ namespace HtmlFeed.Cover
 	export async function coverFormSubmit()
 	{
 		document.head.append(HtmlFeed.getStandardCss());
-		const raw = new Raw();
 		
 		const baseUrl = Cover.serve({
 			"/": () =>
 			{
 				return `
-					<section>
-						<form action="/submit">
+					<section style="background-color: crimson">
+						<form action="${baseUrl}submit">
 							<button type="submit">Submit</button>
 						</form>
 					</section>
-				`;
+				`
 			},
 			"/submit": () =>
 			{
@@ -24,20 +23,12 @@ namespace HtmlFeed.Cover
 			}
 		});
 		
-		const style: Raw.Style = {
-			textAlign: "center",
-			fontSize: "10vw",
-			fontWeight: 900,
-			lineHeight: "100vh",
-		};
+		await new Promise(r => setTimeout(r, 100));
 		
-		document.body.append(
-			raw.section(
-				{ backgroundColor: "crimson", ...style },
-				raw.form({ action: "/submit" },
-					raw.button({ type: "submit" }, raw.text("Submit"))
-				),
-			),
-		);
+		const page = await HtmlFeed.getPageFromUrl(baseUrl);
+		if (!page)
+			throw "?";
+		
+		document.body.append(...page.sections);
 	}
 }

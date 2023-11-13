@@ -156,13 +156,103 @@ namespace HtmlFeed
 	export async function getDocumentFromUrl(url: string)
 	{
 		const result = await getHttpContent(url);
-		if (!result)
-			return null;
-		
-		const docUri = Url.folderOf(url);
-		const sanitizer = new ForeignDocumentSanitizer(result.text, docUri);
-		return sanitizer.read();
+		return result ? sanitizeDocument(url, result.text) : null;
 	}
+	
+	/**
+	 * Removes all unsafe HTML from the specified HTML code, and patches all
+	 * <form> elements so that its submission operation results in the response
+	 * being patched within the document, rather than a redirect occuring.
+	 */
+	async function sanitizeDocument(url: string, html: string)
+	{
+		const docUri = Url.folderOf(url);
+		const sanitizer = new ForeignDocumentSanitizer(html, docUri);
+		const doc = sanitizer.read();
+		
+		for (const form of Array.from(doc.getElementsByTagName("form")))
+		{
+			if (patchedForms.has(form))
+				continue;
+			
+			const action = (form.action || "").trim();
+			const containingSection = getContainingSection(form);
+			if (!containingSection)
+				continue;
+			
+			const target = form.target.replace(/"/g, `\\"`);
+			const targetElement = containingSection.querySelector(`[id="${target}"]`) || form;
+			
+			form.addEventListener("submit", async ev =>
+			{
+				ev.preventDefault();
+				
+				if (action === "")
+					return;
+				
+				const content = await HtmlFeed.getHttpContent(action, {
+					method: form.method,
+					quiet: true,
+				});
+				
+				if (content === null)
+				{
+					for (const fn of submitFailureFns)
+						fn(form);
+				}
+				else
+				{
+					const html = content.text;
+					const doc = await sanitizeDocument(url, html);
+					const replacements = Array.from(doc.body.children);
+					
+					if (targetElement.tagName === "SECTION" &&
+						targetElement.parentElement?.tagName === "BODY" &&
+						replacements.some(e => e.tagName !== "SECTION"))
+					{
+						targetElement.replaceChildren(...replacements);
+					}
+					else
+					{
+						targetElement.replaceWith(...replacements);
+					}
+				}
+			});
+			
+			patchedForms.add(form);
+		}
+		
+		return doc;
+	}
+	
+	/**
+	 * Gets the <section> element defined at the root level
+	 * that contains the specified HTMLElement.
+	 */
+	function getContainingSection(e: HTMLElement)
+	{
+		let current = e;
+		
+		for (;;)
+		{
+			const closest = current.parentElement?.closest("section");
+			if (!closest)
+				return current === e ? null : e;
+			
+			current = closest;
+		}
+	}
+	
+	const patchedForms = new WeakSet<HTMLFormElement>();
+	
+	/**
+	 * Specifies a function to invoke when the  form submission fails.
+	 */
+	export function handleSubmitFailure(fn: (form: HTMLFormElement) => void)
+	{
+		submitFailureFns.push(fn);
+	}
+	const submitFailureFns: ((form: HTMLFormElement) => void)[] = [];
 	
 	//# Feeds
 	
@@ -239,7 +329,7 @@ namespace HtmlFeed
 		
 		for (let safety = 1000; safety-- > 0;)
 		{
-			const httpContent = await HtmlFeed.getHttpContent(currentUrl, "quiet");
+			const httpContent = await HtmlFeed.getHttpContent(currentUrl, { quiet: true });
 			if (httpContent)
 			{
 				const htmlContent = httpContent.text;
@@ -435,20 +525,17 @@ namespace HtmlFeed
 	 * Makes an HTTP request to the specified URI and returns
 	 * the headers and a string containing the body.
 	 */
-	export async function getHttpContent(relativeUri: string, quiet?: "quiet")
+	export async function getHttpContent(
+		relativeUri: string, 
+		options: IGetHttpContentOptions = {})
 	{
 		relativeUri = Url.resolve(relativeUri, Url.getCurrent());
 		
 		try
 		{
-			const headers: HeadersInit = {
-				//"pragma": "no-cache",
-				//"cache-control": "no-cache",
-			};
-			
 			const fetchResult = await window.fetch(relativeUri, {
-				method: "GET",
-				headers,
+				method: options.method || "GET",
+				headers: options.headers || {},
 				mode: "cors",
 			});
 			
@@ -466,7 +553,7 @@ namespace HtmlFeed
 			}
 			catch (e)
 			{
-				if (!quiet)
+				if (!options.quiet)
 					console.error("Fetch failed: " + relativeUri);
 				
 				return null;
@@ -479,11 +566,19 @@ namespace HtmlFeed
 		}
 		catch (e)
 		{
-			if (!quiet)
+			if (!options.quiet)
 				console.log("Error with request: " + relativeUri);
 			
 			return null;
 		}
+	}
+	
+	/** */
+	interface IGetHttpContentOptions
+	{
+		method?: string;
+		headers?: HeadersInit;
+		quiet?: boolean;
 	}
 	
 	/**
