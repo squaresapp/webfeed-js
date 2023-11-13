@@ -5,6 +5,7 @@ namespace HtmlFeed.Cover
 	export async function coverFormSubmit()
 	{
 		document.head.append(HtmlFeed.getStandardCss());
+		const raw = new Raw();
 		
 		const baseUrl = Cover.serve({
 			"/": () =>
@@ -23,6 +24,20 @@ namespace HtmlFeed.Cover
 			}
 		});
 		
+		const style: Raw.Style = {
+			textAlign: "center",
+			fontSize: "10vw",
+			fontWeight: 900,
+			lineHeight: "100vh",
+		};
 		
+		document.body.append(
+			raw.section(
+				{ backgroundColor: "crimson", ...style },
+				raw.form({ action: "/submit" },
+					raw.button({ type: "submit" }, raw.text("Submit"))
+				),
+			),
+		);
 	}
 }
