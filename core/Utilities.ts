@@ -245,7 +245,6 @@ namespace HtmlFeed
 				const htmlContent = httpContent.text;
 				const reader = new ForeignDocumentReader(htmlContent);
 				
-				
 				reader.trapElement(element =>
 				{
 					if (element.nodeName === "META")

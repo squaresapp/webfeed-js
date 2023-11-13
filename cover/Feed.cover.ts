@@ -2,13 +2,13 @@
 namespace HtmlFeed.Cover
 {
 	/** */
-	export async function coverReelsFeedMetadata()
+	export async function coverFeedMetadata()
 	{
-		const metaData = await HtmlFeed.getFeedMetaData("https://htmlreels.b-cdn.net/trees/index.txt");
+		const metaData = await HtmlFeed.getFeedMetaData("https://scrollapp.github.io/html-feed-examples/trees/index.txt");
 	}
 	
 	/** */
-	export function coverReelsOmniview()
+	export function coverOmniview()
 	{
 		const raw = setupCover();
 		const feed = Cover.generateFeedServer();
