@@ -44,7 +44,9 @@ namespace HtmlFeed.Cover
 			catch (e) { }
 		}
 		
-		return "http://localhost:" + port + "/";
+		const url = "http://localhost:" + port + "/";
+		console.log("Feed server running at: " + url);
+		return url;
 	}
 	
 	namespace Mime

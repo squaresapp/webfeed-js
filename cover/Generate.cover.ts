@@ -7,14 +7,14 @@ namespace HtmlFeed.Cover
 		const routeTable: IRouteTable = {};
 		
 		for (let i = -1; ++i < 20;)
-			routeTable["reel-" + i] = () => generateReel();
+			routeTable["post-" + i] = () => generatePost();
 		
 		const baseUrl = Cover.serve(routeTable);
 		return Object.keys(routeTable).map(k => baseUrl + k);
 	}
 	
 	/** */
-	export function generateReel(...sections: HTMLElement[])
+	export function generatePost(...sections: HTMLElement[])
 	{
 		const raw = Rawdom.createRaw();
 		
