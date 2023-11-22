@@ -2,7 +2,7 @@
 	<img src="readme-poster.png" alt="RawJS Poster Image">
 </p>
 
-# Webfeed JavaScript Library
+# Webfeeds JavaScript Library
 
 Reference implementation library for consuming webfeeds, within the browser.
 Full readme coming soon.
