@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"outFile": "+build/libfeed.debug.js",
+		"outFile": "+build/webfeed.debug.js",
 		"composite": true,
 		"module": "system",
 		"moduleResolution": "node",
@@ -27,7 +27,7 @@
 		"cover/**/*.ts",
 	],
 	"exclude": [
-		"+build/**/*.ts"
+		"+*/**/*.ts"
 	],
 	"references": [
 		{ "path": "../Raw/tsconfig.json" },

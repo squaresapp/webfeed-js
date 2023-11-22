@@ -1,5 +1,5 @@
 
-namespace Libfeed
+namespace Webfeed
 {
 	export const standardCss = `
 		HTML

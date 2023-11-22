@@ -1,5 +1,5 @@
 
-namespace Libfeed
+namespace Webfeed
 {
 	/**
 	 * A class that reads a raw HTML document, and provides

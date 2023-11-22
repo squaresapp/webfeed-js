@@ -1,31 +1,29 @@
 {
-	"name": "libfeed",
+	"name": "webfeed",
 	"author": "Paul Gordon",
-	"description": "The reference implementation library for downloading and displaying HTML feeds in the browser.",
+	"description": "The reference implementation library for downloading and displaying webfeeds in the browser.",
 	"version": "1.0.6",
 	"license": "MIT",
 	"repository": {
-		"url": "https://github.com/scrollapp/libfeed"
+		"url": "https://github.com/scrollapp/webfeed-js"
 	},
 	"bugs": {
-		"url": "https://github.com/scrollapp/libfeed/issues"
+		"url": "https://github.com/scrollapp/webfeed-js/issues"
 	},
-	"main": "libfeed.js",
-	"types": "libfeed.d.ts",
+	"main": "webfeed.js",
+	"types": "webfeed.d.ts",
 	"files": [
-		"libfeed.js",
-		"libfeed.min.js",
-		"libfeed.effects.js",
-		"libfeed.effects.min.js",
-		"libfeed.d.ts",
-		"libfeed.css",
+		"webfeed.js",
+		"webfeed.min.js",
+		"webfeed.d.ts",
+		"webfeed.css",
 		"package.json"
 	],
 	"scripts": {
 		"serve": "http-server -p 10101",
 		"test": "exit 0",
-		"emit-css": "node ./+build/libfeed.debug.js --emit-css",
-		"bundle": "tsc -p tsconfig.release.json && terser ./+build/libfeed.js > ./+build/libfeed.min.js && npm run emit-css",
+		"emit-css": "node ./+build/webfeed.debug.js --emit-css",
+		"bundle": "tsc -p tsconfig.release.json && terser ./+build/webfeed.js > ./+build/webfeed.min.js && npm run emit-css",
 		"release": "npm run bundle && cd ./+build && cp ../package.json ./package.json && np"
 	},
 	"devDependencies": {

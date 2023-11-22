@@ -1,10 +1,10 @@
 
-namespace Libfeed.Cover
+namespace Webfeed.Cover
 {
 	/** */
 	export async function coverFeedMetadata()
 	{
-		const metaData = await Libfeed.getFeedMetaData("https://scrollapp.github.io/html-feed-examples/trees/index.txt");
+		const metaData = await Webfeed.getFeedMetaData("https://scrollapp.github.io/html-feed-examples/trees/index.txt");
 	}
 	
 	/** */
@@ -12,7 +12,7 @@ namespace Libfeed.Cover
 	{
 		const raw = setupCover();
 		const feed = Cover.generateFeedServer();
-		const omniviewElement = Libfeed.getEmbeddedOmniviewFromFeed(feed);
+		const omniviewElement = Webfeed.getEmbeddedOmniviewFromFeed(feed);
 		
 		const style: Raw.Style = {
 			textAlign: "center",

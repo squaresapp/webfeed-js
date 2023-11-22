@@ -1,5 +1,5 @@
 
-namespace Libfeed
+namespace Webfeed
 {
 	/**
 	 * Main entry point for when the reals.js script is 
@@ -15,28 +15,28 @@ namespace Libfeed
 	/** */
 	async function startup()
 	{
-		Libfeed.resolveRemoteSections();
+		Webfeed.resolveRemoteSections();
 		
 		let last = document.querySelector("BODY > SECTION:last-of-type")!;
 		if (!(last instanceof HTMLElement))
 			return;
 		
-		const feedInfos = Libfeed.getFeedsFromDocument();
+		const feedInfos = Webfeed.getFeedsFromDocument();
 		for (const feedInfo of feedInfos)
 		{
 			if (!feedInfo.visible)
 				continue;
 			
-			const urls = await Libfeed.getFeedUrls(feedInfo.href);
+			const urls = await Webfeed.getFeedUrls(feedInfo.href);
 			if (!urls)
 				continue;
 			
-			const omniview = Libfeed.getEmbeddedOmniviewFromFeed(urls);
+			const omniview = Webfeed.getEmbeddedOmniviewFromFeed(urls);
 			last.insertAdjacentElement("afterend", omniview);
 			last = omniview;
 		}
 	}
 	
 	declare const module: any;
-	typeof module === "object" && Object.assign(module.exports, { Libfeed });
+	typeof module === "object" && Object.assign(module.exports, { Webfeed });
 }

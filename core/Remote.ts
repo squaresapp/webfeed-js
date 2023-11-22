@@ -1,5 +1,5 @@
 
-namespace Libfeed
+namespace Webfeed
 {
 	/**
 	 * Returns an array of remote <section> elements that exist underneath
@@ -31,16 +31,16 @@ namespace Libfeed
 		container: ParentNode = document,
 		documentUrl = Url.getCurrent())
 	{
-		const remoteSections = Libfeed.getRemoteSectionElements(container);
+		const remoteSections = Webfeed.getRemoteSectionElements(container);
 		for (const remoteSection of remoteSections)
 		{
 			block:
 			{
-				const remoteUrl = Libfeed.getRemoteSectionSource(remoteSection, documentUrl);
+				const remoteUrl = Webfeed.getRemoteSectionSource(remoteSection, documentUrl);
 				if (!remoteUrl)
 					break block;
 				
-				const poster = await Libfeed.getPosterFromUrl(remoteUrl);
+				const poster = await Webfeed.getPosterFromUrl(remoteUrl);
 				if (!poster)
 					break block;
 				

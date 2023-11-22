@@ -1,10 +1,10 @@
 
-namespace Libfeed.Cover
+namespace Webfeed.Cover
 {
 	/** */
 	export async function coverFormSubmit()
 	{
-		document.head.append(Libfeed.getStandardCss());
+		document.head.append(Webfeed.getStandardCss());
 		
 		const baseUrl = Cover.serve({
 			"/": () =>
@@ -25,7 +25,7 @@ namespace Libfeed.Cover
 		
 		await new Promise(r => setTimeout(r, 100));
 		
-		const page = await Libfeed.getPageFromUrl(baseUrl);
+		const page = await Webfeed.getPageFromUrl(baseUrl);
 		if (!page)
 			throw "?";
 		

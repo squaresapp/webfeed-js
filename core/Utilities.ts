@@ -1,5 +1,5 @@
 
-namespace Libfeed
+namespace Webfeed
 {
 	//# Pages
 	
@@ -12,7 +12,7 @@ namespace Libfeed
 		baseUrl: string)
 	{
 		const container = document.createElement("div");
-		const head: HTMLElement[] = [Libfeed.getStandardCss()];
+		const head: HTMLElement[] = [Webfeed.getStandardCss()];
 		const body: HTMLElement[] = [];
 		const shadow = container.attachShadow({ mode: "open" });
 		
@@ -191,7 +191,7 @@ namespace Libfeed
 				if (action === "")
 					return;
 				
-				const content = await Libfeed.getHttpContent(action, {
+				const content = await Webfeed.getHttpContent(action, {
 					method: form.method,
 					quiet: true,
 				});
@@ -330,7 +330,7 @@ namespace Libfeed
 		
 		for (let safety = 1000; safety-- > 0;)
 		{
-			const httpContent = await Libfeed.getHttpContent(currentUrl, { quiet: true });
+			const httpContent = await Webfeed.getHttpContent(currentUrl, { quiet: true });
 			if (httpContent)
 			{
 				const htmlContent = httpContent.text;
@@ -389,7 +389,7 @@ namespace Libfeed
 	{
 		const page = await getPageFromUrl(pageUrl);
 		return page?.sections.length ?
-			Libfeed.getSandboxedElement([...page.head, page.sections[0]], page.url) :
+			Webfeed.getSandboxedElement([...page.head, page.sections[0]], page.url) :
 			null;
 	}
 	
@@ -402,15 +402,15 @@ namespace Libfeed
 	 */
 	export async function * getPostersFromFeed(feedUrl: string)
 	{
-		const urls = await Libfeed.getFeedUrls(feedUrl);
+		const urls = await Webfeed.getFeedUrls(feedUrl);
 		if (!urls)
 			return;
 		
 		for (const url of urls)
 		{
-			const page = await Libfeed.getPageFromUrl(url);
+			const page = await Webfeed.getPageFromUrl(url);
 			const poster = page?.sections.length ?
-				Libfeed.getSandboxedElement([...page.head, page.sections[0]], page.url) :
+				Webfeed.getSandboxedElement([...page.head, page.sections[0]], page.url) :
 				null;
 			
 			if (poster)
