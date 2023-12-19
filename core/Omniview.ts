@@ -12,8 +12,6 @@ namespace Webfeed
 		if (typeof Omniview === "undefined")
 			throw new Error("Omniview library not found.");
 		
-		const raw = new Raw();
-		
 		const defaultOptions: IOmniviewOptions = {
 			getPoster: index =>
 			{

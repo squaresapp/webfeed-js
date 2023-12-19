@@ -5,7 +5,6 @@ namespace Webfeed.Cover
 	export function setupCover()
 	{
 		document.head.append(Webfeed.getStandardCss());
-		const raw = new Raw();
 		
 		raw.style(
 			"HTML", {

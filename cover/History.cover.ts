@@ -4,7 +4,6 @@ namespace Webfeed.Cover
 	/** */
 	export async function coverHistory()
 	{
-		const raw = new Raw();
 		History.triggerProgrammaticEvents = true;
 		
 		// The browser surface needs to be interacted with,

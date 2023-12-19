@@ -31,7 +31,6 @@
 	],
 	"references": [
 		{ "path": "../Raw/tsconfig.json" },
-		{ "path": "../Rawdom/tsconfig.json" },
 		{ "path": "../Omniview/tsconfig.json" }
 	]
 }

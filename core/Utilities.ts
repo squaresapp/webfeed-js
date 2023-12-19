@@ -431,7 +431,6 @@ namespace Webfeed
 		if (typeof Omniview === "undefined")
 			throw new Error("Omniview library not found.");
 		
-		const raw = new Raw();
 		const omniview = getOmniviewFromFeed(urls, omniviewOptions) as Omniview.Class;
 		
 		const out = raw.div(

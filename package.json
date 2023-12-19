@@ -5,10 +5,10 @@
 	"version": "1.0.6",
 	"license": "MIT",
 	"repository": {
-		"url": "https://github.com/scrollapp/webfeed-js"
+		"url": "https://github.com/squaresapp/webfeed-js"
 	},
 	"bugs": {
-		"url": "https://github.com/scrollapp/webfeed-js/issues"
+		"url": "https://github.com/squaresapp/webfeed-js/issues"
 	},
 	"main": "webfeed.js",
 	"types": "webfeed.d.ts",

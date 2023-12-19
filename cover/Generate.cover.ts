@@ -6,8 +6,8 @@ namespace Webfeed.Cover
 	{
 		const routeTable: IRouteTable = {};
 		
-		for (let i = -1; ++i < 20;)
-			routeTable["page-" + i] = () => generatePage();
+		//for (let i = -1; ++i < 20;)
+		//	routeTable["page-" + i] = () => generatePage();
 		
 		const baseUrl = Cover.serve(routeTable);
 		return Object.keys(routeTable).map(k => baseUrl + k);
@@ -16,6 +16,7 @@ namespace Webfeed.Cover
 	/** */
 	export function generatePage(...sections: HTMLElement[])
 	{
+		/*
 		const raw = Rawdom.createRaw();
 		
 		if (sections.length === 0)
@@ -50,23 +51,26 @@ namespace Webfeed.Cover
 		];
 		
 		return Rawdom.emit({ doctype: true, minify: false }, ...nodes);
+		*/
 	}
 	
 	/** */
 	export function generateSection()
 	{
+		/*
 		const raw = Rawdom.createRaw();
 		return raw.section(
 			raw.div(
 				raw.text(generateSentence())
 			)
 		);
+		*/
 	}
 	
 	/** */
 	export function generateSentence(wordCount = 4)
 	{
-		const wordList = Raw.elements.slice();
+		const wordList = Array.from(Raw.elements.values());
 		const words: string[] = [];
 		
 		for (let i = -1; ++i < wordCount;)
