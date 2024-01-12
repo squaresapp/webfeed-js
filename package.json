@@ -20,7 +20,7 @@
 		"package.json"
 	],
 	"scripts": {
-		"serve": "http-server -p 10101",
+		"serve": "vite --no-cors --port 10101",
 		"test": "exit 0",
 		"emit-css": "node ./+build/webfeed.debug.js --emit-css",
 		"bundle": "tsc -p tsconfig.release.json && terser ./+build/webfeed.js > ./+build/webfeed.min.js && npm run emit-css",
