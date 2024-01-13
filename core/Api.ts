@@ -9,7 +9,7 @@ namespace Webfeed
 	{
 		const maybeBootstrap = () =>
 		{
-			const shouldBootstrap = !!document.querySelector("META[name=webfeed]");
+			const shouldBootstrap = !!document.querySelector("[data-webfeed-bootstrap]");
 			if (shouldBootstrap)
 				bootstrap();
 		}
@@ -30,7 +30,7 @@ namespace Webfeed
 	{
 		baseHref = Url.folderOf(baseHref) || "";
 		if (!baseHref)
-			throw new Error("Invalid base URL: " + baseHref)
+			throw new Error("Invalid base URL: " + baseHref);
 		
 		const body = document.body;
 		const sections = Reorganizer.composeSections(baseHref, body);
