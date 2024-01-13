@@ -1,5 +1,5 @@
 
-namespace Webfeed.Cover
+namespace Cover
 {
 	/** */
 	export function generateFeedServer()

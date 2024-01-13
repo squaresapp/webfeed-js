@@ -2,17 +2,36 @@
 namespace Webfeed
 {
 	/**
+	 * @internal
 	 * A namespace of functions that perform URL manipulation.
 	 */
 	export namespace Url
 	{
+		/**
+		 * Parses the specified URL string and returns a URL object,
+		 * or null if the URL fails to parse.
+		 */
+		export function tryParse(url: string, base?: string)
+		{
+			try
+			{
+				return new URL(url, base);
+			}
+			catch (e) { }
+			
+			return null;
+		}
+		
 		/**
 		 * Returns the URL of the containing folder of the specified URL.
 		 * The provided URL must be valid, or an exception will be thrown.
 		 */
 		export function folderOf(url: string)
 		{
-			const lo = new URL(url);
+			const lo = tryParse(url);
+			if (!lo)
+				return null;
+			
 			const parts = lo.pathname.split("/").filter(s => !!s);
 			const last = parts[parts.length - 1];
 			
@@ -55,7 +74,7 @@ namespace Webfeed
 			if (storedUrl)
 				return storedUrl;
 			
-			let url = Url.folderOf(document.URL);
+			let url = Url.folderOf(document.URL)!;
 			
 			const base = document.querySelector("base[href]");
 			if (base)

@@ -2,6 +2,7 @@
 namespace Webfeed
 {
 	/**
+	 * @internal
 	 * A class that wraps a ForeignDocumentReader, and which converts
 	 * the content of the specified raw HTML document into a format
 	 * which is acceptable for injection into a blog.

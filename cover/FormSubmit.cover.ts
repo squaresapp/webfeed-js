@@ -1,11 +1,9 @@
 
-namespace Webfeed.Cover
+namespace Cover
 {
 	/** */
 	export async function coverFormSubmit()
 	{
-		document.head.append(Webfeed.getStandardCss());
-		
 		const baseUrl = Cover.serve({
 			"/": () =>
 			{
@@ -25,10 +23,10 @@ namespace Webfeed.Cover
 		
 		await new Promise(r => setTimeout(r, 100));
 		
-		const page = await Webfeed.getPageFromUrl(baseUrl);
-		if (!page)
+		const sections = await Webfeed.downloadSections(baseUrl);
+		if (!sections)
 			throw "?";
 		
-		document.body.append(...page.sections);
+		document.body.append(...sections);
 	}
 }
