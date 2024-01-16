@@ -58,9 +58,9 @@ namespace Webfeed
 	 * empty string if the server didn't return one of the expected 
 	 * headers.
 	 */
-	export async function pingIndex(feedIndexUrl: string)
+	export async function pingIndex(url: string)
 	{
-		const result = await Http.request(feedIndexUrl, { method: "HEAD", quiet: true });
+		const result = await Http.request(url, { method: "HEAD", quiet: true });
 		if (!result)
 			return null;
 		
@@ -77,13 +77,13 @@ namespace Webfeed
 	 * 
 	 * Returns null if the URL was invalid, or could not be reached.
 	 */
-	export async function downloadIndex(feedIndexUrl: string)
+	export async function downloadIndex(url: string)
 	{
-		const feedIndexFolderUrl = Url.folderOf(feedIndexUrl);
+		const feedIndexFolderUrl = Url.folderOf(url);
 		if (!feedIndexFolderUrl)
 			return null;
 		
-		const fetchResult = await Http.request(feedIndexUrl);
+		const fetchResult = await Http.request(url);
 		if (!fetchResult)
 			return null;
 		
@@ -91,7 +91,7 @@ namespace Webfeed
 		if (type !== "text/plain")
 		{
 			console.error(
-				"Feed at URL: " + feedIndexUrl + "was returned with an incorrect " +
+				"Feed at URL: " + url + "was returned with an incorrect " +
 				"mime type. Expected mime type is \"text/plain\", but the mime type \"" + 
 				type + "\" was returned.");
 				
@@ -114,9 +114,9 @@ namespace Webfeed
 	 * this HTML file to extract out the <meta> and <link> tags of
 	 * interest.
 	 */
-	export async function downloadMetaData(feedIndexUrl: string)
+	export async function downloadMetaData(indexUrl: string)
 	{
-		const feedIndexFolderUrl = Url.folderOf(feedIndexUrl);
+		const feedIndexFolderUrl = Url.folderOf(indexUrl);
 		if (!feedIndexFolderUrl)
 			return null;
 		
@@ -162,9 +162,9 @@ namespace Webfeed
 	 * from the specified URL. The URL is expected to be a
 	 * webfeed-compatible page.
 	 */
-	export async function downloadPoster(feedPageUrl: string)
+	export async function downloadPoster(pageUrl: string)
 	{
-		const sections = await downloadSections(feedPageUrl, 0, 1);
+		const sections = await downloadSections(pageUrl, 0, 1);
 		return sections?.length ? sections[0] : null;
 	}
 	
@@ -172,23 +172,23 @@ namespace Webfeed
 	 * Downloads the top-level <section> elements found in the specified
 	 * webfeed-compatible page. 
 	 * 
-	 * Returns null if the URL could not be loaded, or if the feedPageUrl
+	 * Returns null if the URL could not be loaded, or if the pageUrl
 	 * argument does not form a valid fully-qualified URL.
 	 */
 	export async function downloadSections(
-		feedPageUrl: string,
+		pageUrl: string,
 		rangeStart?: number,
 		rangeEnd?: number)
 	{
-		const result = await Http.request(feedPageUrl);
+		const result = await Http.request(pageUrl);
 		if (!result)
 			return null;
 		
-		const baseHref = Url.folderOf(feedPageUrl);
+		const baseHref = Url.folderOf(pageUrl);
 		if (!baseHref)
 			return null;
 		
-		const sanitizer = new ForeignDocumentSanitizer(result.body, feedPageUrl);
+		const sanitizer = new ForeignDocumentSanitizer(result.body, pageUrl);
 		const doc = sanitizer.read();
 		return Reorganizer.composeSections(baseHref, doc, rangeStart, rangeEnd);
 	}
@@ -197,7 +197,7 @@ namespace Webfeed
 	 * Returns the URL of the containing folder of the specified URL.
 	 * The provided URL must be valid, or an exception will be thrown.
 	 */
-	export async function getFolderOf(url: string)
+	export function getFolderOf(url: string)
 	{
 		return Url.folderOf(url);
 	}
@@ -227,7 +227,7 @@ namespace Webfeed
 	/**
 	 * Renders a placeholder poster for when the page couldn't be loaded.
 	 */
-	export async function createErrorPoster()
+	export async function getErrorPoster()
 	{
 		const e = document.createElement("div");
 		const s = e.style;
