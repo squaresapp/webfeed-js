@@ -21,8 +21,8 @@ namespace Webfeed
 	}
 	
 	/**
-	 * Converts the <section> elements found in the specified container
-	 * element into the webfeed-scrollable format. This function is intended
+	 * Converts the <section> elements found in the document's body
+	 * into the webfeed-scrollable format. This function is intended
 	 * to be called by webfeed pages that are displaying in the browser,
 	 * rather than in a webfeed reader.
 	 */
