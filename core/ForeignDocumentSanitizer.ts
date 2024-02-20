@@ -32,10 +32,13 @@ namespace Webfeed
 				
 				if (t === "noscript")
 				{
-					return Raw.div(
-						Array.from(e.attributes),
-						Array.from(e.children),
-					);
+					const div = document.createElement("div");
+					
+					for (const attr of Array.from(div.attributes))
+						div.setAttributeNode(attr);
+					
+					div.append(...Array.from(div.children));
+					return div;
 				}
 				
 				return e;

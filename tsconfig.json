@@ -28,9 +28,5 @@
 	],
 	"exclude": [
 		"+*/**/*.ts"
-	],
-	"references": [
-		{ "path": "../Raw/tsconfig.json" },
-		{ "path": "../Omniview/tsconfig.json" }
 	]
 }

@@ -5,13 +5,5 @@
 	},
 	"include": [
 		"**/core/**/*.ts"
-	],
-	"exclude": [
-		"**/+build/**/*.ts",
-		"**/*.cover.ts"
-	],
-	"references": [
-		{ "path": "../Raw" },
-		{ "path": "../Omniview" }
 	]
 }

@@ -70,7 +70,7 @@ namespace Cover
 	/** */
 	export function generateSentence(wordCount = 4)
 	{
-		const wordList = Array.from(Raw.elements.values());
+		const wordList = ["apple", "banana", "pear"];
 		const words: string[] = [];
 		
 		for (let i = -1; ++i < wordCount;)
