@@ -16,11 +16,17 @@ namespace Webfeed.Http
 		
 		try
 		{
+			const ac = new AbortController();
+			const id = setTimeout(() => ac.abort(), requestTimeout);
+			
 			const fetchResult = await window.fetch(relativeUri, {
 				method: options.method || "GET",
 				headers: options.headers || {},
 				mode: "cors",
+				signal: ac.signal,
 			});
+			
+			clearTimeout(id);
 			
 			if (!fetchResult.ok)
 			{
@@ -55,6 +61,9 @@ namespace Webfeed.Http
 			return null;
 		}
 	}
+	
+	/** The number of milliseconds to wait before cancelling an HTTP request. */
+	export let requestTimeout = 500;
 	
 	/** */
 	interface IHttpRequestOptions
