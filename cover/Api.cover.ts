@@ -5,7 +5,7 @@ namespace Cover
 	export async function coverPingIndex()
 	{
 		const indexUrl = "https://webfeed-tulips.pages.dev/index.txt";
-		const pingResult = await Webfeed.pingIndex(indexUrl);
+		const pingResult = await Webfeed.ping(indexUrl);
 		return () => pingResult !== null && pingResult !== "";
 	}
 	

@@ -58,7 +58,7 @@ namespace Webfeed
 	 * empty string if the server didn't return one of the expected 
 	 * headers.
 	 */
-	export async function pingIndex(url: string)
+	export async function ping(url: string)
 	{
 		const result = await Http.request(url, { method: "HEAD", quiet: true });
 		if (!result)
