@@ -24,7 +24,7 @@
 		"test": "exit 0",
 		"emit-css": "node ./+build/webfeed.debug.js --emit-css",
 		"bundle": "tsc -p tsconfig.release.json && terser ./+build/webfeed.js > ./+build/webfeed.min.js && npm run emit-css",
-		"release": "npm run bundle && cd ./build && cp ../package.json ./package.json && np && cp ./package.json ../package.json"
+		"release": "npm run bundle && cd ./+build && cp ../package.json ./package.json && np && cp ./package.json ../package.json"
 	},
 	"devDependencies": {
 		"@types/node": "^20.4.9"
