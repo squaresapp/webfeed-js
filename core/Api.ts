@@ -107,14 +107,14 @@ namespace Webfeed
 	}
 	
 	/**
-	 * Reads the meta data associated with the specified feed index.
+	 * Reads the "details" associated with the specified feed index.
 	 * The behavior mirrors the webfeed specification: it looks in the
 	 * same folder as the index.txt file for a default document, which
 	 * is expected to be an HTML file. It parses the <head> section of
 	 * this HTML file to extract out the <meta> and <link> tags of
 	 * interest.
 	 */
-	export async function downloadMetaData(indexUrl: string)
+	export async function downloadDetails(indexUrl: string)
 	{
 		const feedIndexFolderUrl = Url.folderOf(indexUrl);
 		if (!feedIndexFolderUrl)
@@ -124,6 +124,7 @@ namespace Webfeed
 		if (!result)
 			return null;
 		
+		let date = result.headers.get("Last-Modified") || "";
 		let author = "";
 		let description = "";
 		let icon = "";
@@ -154,7 +155,7 @@ namespace Webfeed
 		
 		reader.read();
 		
-		return { author, description, icon };
+		return { date, author, description, icon };
 	}
 	
 	/**

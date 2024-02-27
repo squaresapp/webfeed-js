@@ -22,15 +22,15 @@ namespace Cover
 	}
 	
 	/** */
-	export async function coverDownloadMetaData()
+	export async function coverDownloadDetails()
 	{
 		const indexUrl = "https://webfeed-tulips.pages.dev/index.txt";
-		const meta = await Webfeed.downloadMetaData(indexUrl);
+		const details = await Webfeed.downloadDetails(indexUrl);
 		return [
-			() => meta !== null,
-			() => meta?.author !== null,
-			() => meta?.description !== null,
-			() => meta?.icon !== null,
+			() => details !== null,
+			() => details?.author !== null,
+			() => details?.description !== null,
+			() => details?.icon !== null,
 		];
 	}
 	
