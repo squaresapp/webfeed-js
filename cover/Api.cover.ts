@@ -43,8 +43,15 @@ namespace Cover
 			return () => false;
 		
 		const carouselUrl = index[0];
-		const poster = await Webfeed.downloadPoster(carouselUrl);
-		return () => poster instanceof HTMLElement;
+		const page = await Webfeed.downloadPage(carouselUrl);
+		
+		if (!page)
+			return () => !"No sections found at the URL";
+		
+		return [
+			() => page.poster instanceof HTMLElement,
+			() => page.sections.length > 1,
+		];
 	}
 	
 	/** */
@@ -56,7 +63,9 @@ namespace Cover
 			return () => false;
 		
 		const carouselUrl = index[0];
-		const sections = await Webfeed.downloadSections(carouselUrl);
-		return () => (sections?.length || 0) > 1;
+		const page = await Webfeed.downloadPage(carouselUrl);
+		const sections = page?.sections || [];
+		
+		return () => (sections.length || 0) > 1;
 	}
 }

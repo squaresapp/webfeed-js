@@ -23,10 +23,10 @@ namespace Cover
 		
 		await new Promise(r => setTimeout(r, 100));
 		
-		const sections = await Webfeed.downloadSections(baseUrl);
-		if (!sections)
+		const page = await Webfeed.downloadPage(baseUrl);
+		if (!page)
 			throw "?";
 		
-		document.body.append(...sections);
+		document.body.append(...page.sections);
 	}
 }

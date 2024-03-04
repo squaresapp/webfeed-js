@@ -159,27 +159,10 @@ namespace Webfeed
 	}
 	
 	/**
-	 * Reads the first <section> (referred to as the "poster" section)
-	 * from the specified URL. The URL is expected to be a
-	 * webfeed-compatible page.
+	 * Downloads a page from the specified page URL. Returns the poster element,
+	 * as well as the full array of sections of the page (including the poster).
 	 */
-	export async function downloadPoster(pageUrl: string)
-	{
-		const sections = await downloadSections(pageUrl, 0, 1);
-		return sections?.length ? sections[0] : null;
-	}
-	
-	/**
-	 * Downloads the top-level <section> elements found in the specified
-	 * webfeed-compatible page. 
-	 * 
-	 * Returns null if the URL could not be loaded, or if the pageUrl
-	 * argument does not form a valid fully-qualified URL.
-	 */
-	export async function downloadSections(
-		pageUrl: string,
-		rangeStart?: number,
-		rangeEnd?: number)
+	export async function downloadPage(pageUrl: string)
 	{
 		const result = await Http.request(pageUrl);
 		if (!result)
@@ -189,9 +172,18 @@ namespace Webfeed
 		if (!baseHref)
 			return null;
 		
-		const sanitizer = new ForeignDocumentSanitizer(result.body, pageUrl);
-		const doc = sanitizer.read();
-		return Reorganizer.composeSections(baseHref, doc, rangeStart, rangeEnd);
+		const createDoc = () =>
+		{
+			const sanitizer = new ForeignDocumentSanitizer(result.body, pageUrl);
+			const doc = sanitizer.read();
+			return doc;
+		};
+		
+		const docA = createDoc();
+		const docB = createDoc();
+		const sections = Reorganizer.composeSections(baseHref, docA);
+		const poster = Reorganizer.composeSections(baseHref, docB, 0, 1)[0];
+		return sections.length === 0 ? null : { poster, sections };
 	}
 	
 	/**

@@ -11,14 +11,14 @@ namespace Webfeed
 	{
 		/** */
 		constructor(
-			private readonly rawDocument: string,
+			private readonly documentContent: string,
 			private readonly baseHref: string)
 		{ }
 		
 		/** */
 		read()
 		{
-			const reader = new ForeignDocumentReader(this.rawDocument);
+			const reader = new ForeignDocumentReader(this.documentContent);
 			
 			reader.trapElement(e =>
 			{
