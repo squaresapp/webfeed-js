@@ -61,14 +61,7 @@ namespace Webfeed
 	export async function ping(url: string)
 	{
 		const result = await Http.request(url, { method: "HEAD", quiet: true });
-		if (!result)
-			return null;
-		
-		return Util.hash([
-			result.headers.get("etag") || "",
-			result.headers.get("last-modified") || "",
-			result.headers.get("content-length") || "",
-		].join());
+		return result ? getChecksumFromHeaders(result.headers) : null;
 	}
 	
 	/**
@@ -98,12 +91,25 @@ namespace Webfeed
 			return null;
 		}
 		
-		return fetchResult.body
+		const index = fetchResult.body
 			.split("\n")
 			.map(s => s.trim())
 			.filter(s => !!s && !s.startsWith("#"))
 			.filter((s): s is string => !!Url.tryParse(s, feedIndexFolderUrl))
 			.map(s => Url.resolve(s, feedIndexFolderUrl));
+		
+		const checksum = getChecksumFromHeaders(fetchResult.headers);
+		return { index, checksum };
+	}
+	
+	/** */
+	function getChecksumFromHeaders(headers: Headers)
+	{
+		return Util.hash([
+			headers.get("etag") || "",
+			headers.get("last-modified") || "",
+			headers.get("content-length") || "",
+		].join());
 	}
 	
 	/**

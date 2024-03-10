@@ -13,11 +13,11 @@ namespace Cover
 	export async function coverDownloadIndex()
 	{
 		const indexUrl = "https://webfeed-tulips.pages.dev/index.txt";
-		const index = await Webfeed.downloadIndex(indexUrl);
+		const result = await Webfeed.downloadIndex(indexUrl);
 		return [
-			() => index !== null,
-			() => (index?.length || 0) > 0,
-			() => Webfeed.Url.tryParse(index?.[0] || ""),
+			() => result !== null,
+			() => (result?.index.length || 0) > 0,
+			() => Webfeed.Url.tryParse(result?.index[0] || ""),
 		];
 	}
 	
@@ -38,11 +38,11 @@ namespace Cover
 	export async function coverDownloadPoster()
 	{
 		const indexUrl = "https://webfeed-tulips.pages.dev/index.txt";
-		const index = await Webfeed.downloadIndex(indexUrl);
-		if (index === null || index.length === 0)
+		const result = await Webfeed.downloadIndex(indexUrl);
+		if (result === null || result.index.length === 0)
 			return () => false;
 		
-		const carouselUrl = index[0];
+		const carouselUrl = result.index[0];
 		const page = await Webfeed.downloadPage(carouselUrl);
 		
 		if (!page)
@@ -58,11 +58,11 @@ namespace Cover
 	export async function coverDownloadSections()
 	{
 		const indexUrl = "https://webfeed-tulips.pages.dev/index.txt";
-		const index = await Webfeed.downloadIndex(indexUrl);
-		if (index === null || index.length === 0)
+		const result = await Webfeed.downloadIndex(indexUrl);
+		if (result === null || result.index.length === 0)
 			return () => false;
 		
-		const carouselUrl = index[0];
+		const carouselUrl = result.index[0];
 		const page = await Webfeed.downloadPage(carouselUrl);
 		const sections = page?.sections || [];
 		
