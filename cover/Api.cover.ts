@@ -68,4 +68,18 @@ namespace Cover
 		
 		return () => (sections.length || 0) > 1;
 	}
+	
+	/** */
+	export async function coverDownloadIndexWithinBrowser()
+	{
+		const indexUrl = "https://webfeed-worker.squaresapp.workers.dev/index.txt";
+		const result = await Webfeed.downloadIndex(indexUrl);
+		if (result === null || result.index.length === 0)
+			return () => false;
+		
+		return () => result.index.length > 0 && result.checksum.length > 3;
+	}
+	
+	if (window.location.port === "10101")
+		setTimeout(() => coverDownloadIndexWithinBrowser(), 100);
 }

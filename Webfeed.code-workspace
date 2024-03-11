@@ -67,6 +67,14 @@
 				],
 				"sourceMaps": true,
 				"timeout": 2000
+			},
+			{
+				"name": "Debug In Browser",
+				"type": "chrome",
+				"request": "launch",
+				"webRoot": "${workspaceFolder}",
+				"port": 9222,
+				"url": "http://localhost:10101"
 			}
 		]
 	},

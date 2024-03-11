@@ -98,18 +98,20 @@ namespace Webfeed
 			.filter((s): s is string => !!Url.tryParse(s, feedIndexFolderUrl))
 			.map(s => Url.resolve(s, feedIndexFolderUrl));
 		
-		const checksum = getChecksumFromHeaders(fetchResult.headers);
+		const checksum = getChecksumFromHeaders(fetchResult.headers) || Util.hash(index.join(""));
 		return { index, checksum };
 	}
 	
 	/** */
 	function getChecksumFromHeaders(headers: Headers)
 	{
-		return Util.hash([
-			headers.get("etag") || "",
-			headers.get("last-modified") || "",
-			headers.get("content-length") || "",
-		].join());
+		const plain = [
+			headers.get("ETag") || "",
+			headers.get("Last-Modified") || "",
+			headers.get("Content-Length") || "",
+		].join("")
+		
+		return plain ? Util.hash(plain) : "";
 	}
 	
 	/**
