@@ -80,6 +80,6 @@ namespace Cover
 		return () => result.index.length > 0 && result.checksum.length > 3;
 	}
 	
-	if (window.location.port === "10101")
+	if (typeof window !== "undefined" && window.location.port === "10101")
 		setTimeout(() => coverDownloadIndexWithinBrowser(), 100);
 }
