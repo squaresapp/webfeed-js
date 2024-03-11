@@ -26,10 +26,8 @@
 		"bundle": "tsc -p tsconfig.release.json && terser ./+build/webfeed.js > ./+build/webfeed.min.js && npm run emit-css",
 		"release": "npm run bundle && cd ./+build && cp ../package.json ./package.json && np && cp ./package.json ../package.json"
 	},
-	"peerDependencies": {
-		"vite": "^5.1.5"
-	},
 	"devDependencies": {
-		"@types/node": "^20.4.9"
+		"@types/node": "^20.4.9",
+		"vite": "^5.1.5"
 	}
 }
