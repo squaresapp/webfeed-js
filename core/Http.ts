@@ -63,7 +63,7 @@ namespace Webfeed.Http
 	}
 	
 	/** The number of milliseconds to wait before cancelling an HTTP request. */
-	export let requestTimeout = 500;
+	export let requestTimeout = 2000;
 	
 	/** */
 	interface IHttpRequestOptions
