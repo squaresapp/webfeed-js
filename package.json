@@ -2,7 +2,7 @@
 	"name": "webfeed",
 	"author": "Paul Gordon",
 	"description": "The reference implementation library for downloading and displaying webfeeds in the browser.",
-	"version": "2.2.2",
+	"version": "2.2.3",
 	"license": "MIT",
 	"repository": {
 		"url": "https://github.com/squaresapp/webfeed-js"
