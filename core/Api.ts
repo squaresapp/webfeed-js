@@ -132,7 +132,6 @@ namespace Webfeed
 		if (!result)
 			return null;
 		
-		let date = result.headers.get("Last-Modified") || "";
 		let author = "";
 		let description = "";
 		let icon = "";
@@ -163,7 +162,7 @@ namespace Webfeed
 		
 		reader.read();
 		
-		return { date, author, description, icon };
+		return { author, description, icon };
 	}
 	
 	/**
